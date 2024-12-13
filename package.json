@@ -1,0 +1,12 @@
+{
+  "name": "auth-services",
+  "version": "1.0.0",
+  "description": "the user management services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/server.js"
+  },
+  "author": "parth dangroshiya",
+  "license": "ISC"
+}
