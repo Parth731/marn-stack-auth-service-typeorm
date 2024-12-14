@@ -4,6 +4,12 @@
   "description": "the user management services",
   "main": "index.js",
   "type": "module",
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint:fix",
+      "npm run format:fix"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
@@ -26,6 +32,7 @@
     "eslint": "^9.17.0",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "prettier": "3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
