@@ -7,15 +7,13 @@ export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
     languageOptions: {
-      globals: globals.node,
+      globals: { ...globals.browser, ...globals.node },
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 2021, // Supports modern JavaScript syntax
         sourceType: 'module', // Use "script" for CommonJS
       },
     },
-  },
-  {
     rules: {
       //* ES6
       'arrow-spacing': 'error',
@@ -28,8 +26,8 @@ export default [
 
       'no-console': 'off',
       'dot-notation': 'error',
-      '@typescript-eslint/require-await': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
+      // '@typescript-eslint/require-await': 'off',
+      // '@typescript-eslint/no-unsafe-assignment': 'off',
 
       //* Avoid Bugs
       'no-undef': 'error',
@@ -46,14 +44,14 @@ export default [
       'no-unused-vars': ['warn', { argsIgnorePattern: 'req|res|next|__' }],
 
       // Function parameter-specific rules
-      '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
-      '@typescript-eslint/parameter-properties': [
-        'error',
-        {
-          prefer: 'class-property',
-        },
-      ],
-      '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
+      // '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
+      // '@typescript-eslint/parameter-properties': [
+      //   'error',
+      //   {
+      //     prefer: 'class-property',
+      //   },
+      // ],
+      // '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
     },
   },
   pluginJs.configs.recommended,

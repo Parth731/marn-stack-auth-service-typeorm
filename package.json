@@ -4,21 +4,15 @@
   "description": "the user management services",
   "main": "index.js",
   "type": "module",
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint:fix",
-      "npm run format:fix"
-    ]
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "tsc && node dist/server.js",
-    "dev": "ts-node src/server.ts",
-    "format:fix": "prettier --write .",
+    "dev": "ts-node src/index.ts",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md,mjs}'",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "prepare": "husky"
   },
   "author": "parth dangroshiya",
@@ -29,6 +23,7 @@
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
+    "dotenv": "^16.4.7",
     "eslint": "^9.17.0",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
@@ -37,6 +32,15 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "src/**/*.{json,css,md,mjs}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "eslint-config-prettier": "^9.1.0",

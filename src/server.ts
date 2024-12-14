@@ -1,5 +1,7 @@
-function WelCome(name: string) {
-  return name;
-}
+import { Config } from './config/index.js';
 
-WelCome('parth');
+export const greet = (name: string): string => {
+  return `Hello, ${name}! Welcome to ${Config.PORT} ${Config.NODE_ENV}`;
+};
+
+console.log(greet('World'));
