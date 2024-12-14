@@ -98,3 +98,59 @@ export default [
 ----------------------------------------
 
 https://medium.com/geekculture/eslint-with-node-js-in-simple-words-cee0a0cf9167
+
+-----------------------------------------------
+
+"rules": {
+    /* --- GENERAL CODE QUALITY RULES --- */
+    "semi": ["error", "always"], // Enforce semicolons
+    "quotes": ["error", "single", { "avoidEscape": true }], // Prefer single quotes
+    "no-unused-vars": "off", // Turn off in favor of @typescript-eslint/no-unused-vars
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Allow unused args with `_`
+    "eol-last": ["error", "always"], // Enforce newline at the end of files
+    "no-console": "warn", // Warn when console statements are used
+    "prefer-const": "error", // Suggest using `const` wherever possible
+    "no-var": "error", // Disallow usage of `var`
+    "eqeqeq": ["error", "smart"], // Enforce `===` and `!==`, but allow `== null`
+    "no-empty-function": "off", // Turn off in favor of TypeScript's rule
+    "@typescript-eslint/no-empty-function": ["warn"], // Warn for empty functions
+
+    /* --- TYPESCRIPT-SPECIFIC RULES --- */
+    "@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }], // Enforce return type declarations
+    "@typescript-eslint/no-explicit-any": "warn", // Discourage `any` type but not strict
+    "@typescript-eslint/no-inferrable-types": ["error"], // Avoid explicit types where they can be inferred
+    "@typescript-eslint/no-floating-promises": ["error"], // Ensure promises are handled properly
+
+    /* --- FUNCTION & STYLE RULES --- */
+    "func-style": ["error", "expression"], // Enforce functional expressions over declarations
+    "arrow-body-style": ["error", "as-needed"], // Enforce concise arrow functions
+    "max-lines-per-function": ["warn", { "max": 50, "skipComments": true }], // Keep functions concise
+    "consistent-return": "error", // Enforce consistent return in functions
+    "@typescript-eslint/no-misused-promises": "error", // Avoid common promise misuse
+    "no-useless-return": "error", // Disallow unnecessary `return` statements
+
+    /* --- IMPORT RULES --- */
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }], // Prevent importing unnecessary dependencies
+    "import/newline-after-import": ["error", { "count": 1 }], // Enforce new lines after imports
+
+    /* --- NODE-SPECIFIC RULES --- */
+    "node/no-unsupported-features/es-syntax": ["off"], // Allow modern ES syntax in Node.js
+    "node/no-unpublished-import": "off", // Allow importing types and dev dependencies
+    "node/no-missing-import": ["error", { "tryExtensions": [".ts", ".js", ".json"] }], // Handle TypeScript file extensions properly
+
+    /* --- PROMISE RULES --- */
+    "promise/always-return": "error", // Ensure promises always return something
+    "promise/catch-or-return": "error", // Require `catch` for unhandled promises
+
+    /* --- OPTIONAL RULES FOR STRICT CODE STYLE --- */
+    "@typescript-eslint/explicit-member-accessibility": ["error", { "overrides": { "constructors": "no-public" } }], // Control access modifiers
+    "@typescript-eslint/member-ordering": ["error", { "default": ["field", "constructor", "method"] }] // Enforce member ordering
+  }
