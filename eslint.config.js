@@ -16,7 +16,6 @@ export default [
     },
   },
   {
-    ignores: ['dist', 'node_modules'],
     rules: {
       //* ES6
       'arrow-spacing': 'error',
@@ -27,7 +26,6 @@ export default [
       'prefer-const': 'error',
       'prefer-template': 'warn',
 
-      //* must setting
       'no-console': 'off',
       'dot-notation': 'error',
       '@typescript-eslint/require-await': 'off',
@@ -47,15 +45,15 @@ export default [
       'no-constant-condition': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: 'req|res|next|__' }],
 
-      // // Function parameter-specific rules
-      // '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
-      // '@typescript-eslint/parameter-properties': [
-      //   'error',
-      //   {
-      //     prefer: 'class-property',
-      //   },
-      // ],
-      // '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
+      // Function parameter-specific rules
+      '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
+      '@typescript-eslint/parameter-properties': [
+        'error',
+        {
+          prefer: 'class-property',
+        },
+      ],
+      '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
     },
   },
   pluginJs.configs.recommended,
