@@ -1,0 +1,100 @@
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintPluginPrettier from 'eslint-plugin-prettier';
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+    { files: ['**/*.{js,mjs,cjs,ts}'] },
+    pluginJs.configs.recommended,
+    eslintPluginPrettier,
+    {
+        extends: [
+            'eslint:recommended',
+            'plugin:@typescript-eslint/recommended',
+            'plugin:node/recommended',
+            'plugin:prettier/recommended',
+        ],
+        env: {
+            node: true,
+            es2021: true,
+        },
+        languageOptions: {
+            parser: '@typescript-eslint/parser',
+            globals: globals.node,
+            parserOptions: {
+                parserOptions: {
+                    ecmaVersion: 2021, // Supports modern JavaScript syntax
+                    sourceType: 'module', // Use "script" for CommonJS
+                },
+            },
+        },
+        ignores: ['dist', 'node_modules'],
+        rules: {
+            '@typescript-eslint/no-unused-vars': ['warn'],
+            '@typescript-eslint/explicit-function-return-type': 'off',
+            // Node.js specific rules
+            'node/no-unsupported-features/es-syntax': [
+                'error',
+                { ignores: ['modules'] }, // Allows ES modules if you're using them
+            ],
+            'node/no-extraneous-require': 'error', // Disallow importing packages not in `package.json`
+            'node/no-missing-require': 'error', // Ensure required modules exist
+
+            // Promise best practices
+            'promise/catch-or-return': 'error', // Enforce handling of rejected promises
+            'promise/no-return-wrap': 'error', // Disallow unnecessary `Promise.resolve` or `Promise.reject`
+
+            // Security rules
+            'security/detect-object-injection': 'warn', // Warn against potential object injection
+            'security/detect-non-literal-fs-filename': 'warn', // Prevent unsafe file paths
+
+            // Prettier integration
+            'prettier/prettier': 'error', // Treat Prettier formatting issues as ESLint errors
+
+            // Import rules
+            'import/no-unresolved': 'error', // Ensure imports point to existing modules/files
+            'import/order': [
+                'error',
+                {
+                    groups: [
+                        ['builtin', 'external'],
+                        'internal',
+                        ['parent', 'sibling'],
+                        'index',
+                    ],
+                    'newlines-between': 'always',
+                },
+            ],
+
+            // Miscellaneous
+            'no-console': 'error', // Warn on `console.log`, but don't error
+            'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // Ignore unused arguments prefixed with `_`
+            eqeqeq: ['error', 'always'], // Enforce strict equality
+        },
+        overrides: [
+            {
+                files: ['*.test.js', '*.spec.js'], // Test files
+                env: {
+                    mocha: true, // If you're using Mocha, or use `jest` for Jest
+                },
+                rules: {
+                    'no-unused-expressions': 'off', // Disable for test assertions like `expect(foo).to.be.true`
+                },
+            },
+        ],
+        plugins: [
+            'node',
+            'promise',
+            'security',
+            'prettier',
+            'import',
+            '@typescript-eslint',
+        ],
+    },
+    pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
+];
+----------------------------------------
+
+https://medium.com/geekculture/eslint-with-node-js-in-simple-words-cee0a0cf9167
