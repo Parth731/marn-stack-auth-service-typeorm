@@ -14,6 +14,12 @@ export default [
         sourceType: 'module', // Use "script" for CommonJS
       },
     },
+    settings: {
+      'import/resolver': {
+        typescript: {}, // This ensures TypeScript files are resolved correctly
+      },
+    },
+
     rules: {
       //* ES6
       'arrow-spacing': 'error',
@@ -23,6 +29,7 @@ export default [
       'object-shorthand': 'off',
       'prefer-const': 'error',
       'prefer-template': 'warn',
+      'no-require-imports': 'off',
 
       'no-console': 'off',
       'dot-notation': 'error',
@@ -33,6 +40,7 @@ export default [
       'no-undef': 'error',
       semi: 'error',
       'semi-spacing': 'error',
+
       //* Best Practices
       eqeqeq: 'warn',
       'no-invalid-this': 'error',
@@ -41,7 +49,7 @@ export default [
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
       'no-constant-condition': 'warn',
-      'no-unused-vars': ['warn', { argsIgnorePattern: 'req|res|next|__' }],
+      'no-unused-vars': 'warn',
 
       // Function parameter-specific rules
       // '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
