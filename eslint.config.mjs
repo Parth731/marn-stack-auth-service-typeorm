@@ -1,7 +1,7 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
-// import jest from 'eslint-plugin-jest';
+import jest from 'eslint-plugin-jest';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
@@ -13,17 +13,16 @@ export default [
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  // {
-  //   files: ['tests/**/*.{js,ts,jsx,tsx}'],
-  //   ...jest.configs['flat/recommended'],
-  //   rules: {
-  //     ...jest.configs['flat/recommended'].rules,
-  //     'jest/prefer-expect-assertions': 'off',
-  //   },
-  // },
+  {
+    files: ['tests/**/*.{js,ts,jsx,tsx}'],
+    ...jest.configs['flat/recommended'],
+    rules: {
+      ...jest.configs['flat/recommended'].rules,
+      'jest/prefer-expect-assertions': 'off',
+    },
+  },
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': 'off',
       'prettier/prettier': [
         'error',
         {
@@ -43,6 +42,7 @@ export default [
 
       'no-console': 'off',
       'dot-notation': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
 
@@ -59,7 +59,7 @@ export default [
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
       'no-constant-condition': 'warn',
-      'no-unused-vars': 'error',
+      // 'no-unused-vars': 'error', // Ignore unused arguments prefixed with `_`
 
       // Function parameter-specific rules
       '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
