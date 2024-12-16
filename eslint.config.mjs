@@ -1,26 +1,36 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
+// import jest from 'eslint-plugin-jest';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
-  { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
-    languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        ecmaVersion: 2021, // Supports modern JavaScript syntax
-        sourceType: 'module', // Use "script" for CommonJS
-      },
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {}, // This ensures TypeScript files are resolved correctly
-      },
-    },
-
+    ignores: ['dist', 'node_modules'],
+  },
+  { files: ['src/**/*.{js,ts,jsx,tsx}', 'tests/**/*.{js,ts,jsx,tsx}'] },
+  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+  { languageOptions: { globals: globals.node } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  // {
+  //   files: ['tests/**/*.{js,ts,jsx,tsx}'],
+  //   ...jest.configs['flat/recommended'],
+  //   rules: {
+  //     ...jest.configs['flat/recommended'].rules,
+  //     'jest/prefer-expect-assertions': 'off',
+  //   },
+  // },
+  {
     rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+        },
+      ],
+
       //* ES6
       'arrow-spacing': 'error',
       'no-confusing-arrow': 'error',
@@ -33,13 +43,13 @@ export default [
 
       'no-console': 'off',
       'dot-notation': 'error',
-      // '@typescript-eslint/require-await': 'off',
-      // '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
 
       //* Avoid Bugs
-      'no-undef': 'error',
-      semi: 'error',
-      'semi-spacing': 'error',
+      // 'no-undef': 'error',
+      // semi: 'error',
+      // 'semi-spacing': 'error',
 
       //* Best Practices
       eqeqeq: 'warn',
@@ -49,19 +59,13 @@ export default [
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
       'no-constant-condition': 'warn',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'error',
 
       // Function parameter-specific rules
-      // '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
-      // '@typescript-eslint/parameter-properties': [
-      //   'error',
-      //   {
-      //     prefer: 'class-property',
-      //   },
-      // ],
-      // '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
+      '@typescript-eslint/explicit-module-boundary-types': 'error', // Require explicit types for exported functions and parameters
+      '@typescript-eslint/parameter-properties': 'error', // Require explicit types for function parameters
+      '@typescript-eslint/no-empty-function': 'warn', // Warn against empty functions
     },
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  eslintPluginPrettierRecommended,
 ];

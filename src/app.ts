@@ -1,5 +1,5 @@
-import express, { NextFunction, Request, Response } from 'express';
-import logger from './config/logger.js';
+import express, { Request, Response } from 'express';
+import logger from './config/logger';
 import { HttpError } from 'http-errors';
 
 const app = express();
@@ -11,8 +11,7 @@ app.get('/', async (req: Request, res: Response) => {
 });
 
 // global error handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
+app.use((error: HttpError, req: Request, res: Response) => {
   logger.error(error.message);
   const statusCode = error.statusCode || 500;
   res.status(statusCode).json({
