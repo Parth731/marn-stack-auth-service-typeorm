@@ -4,11 +4,11 @@
   "description": "the user management services",
   "main": "index.js",
   "scripts": {
+    "start": "tsc && ts-node dist/server.js",
+    "dev": "nodemon --legacy-watch src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch --runInBand --coverage",
     "build": "tsc",
-    "start": "tsc && ts-node dist/server.js",
-    "dev": "nodemon src/server.ts",
     "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md,mjs}'",
     "format:check": "prettier --check .",
     "lint": "eslint",

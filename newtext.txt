@@ -224,3 +224,15 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
 ];
+
+----------------------------------------------------------------------------------
+
+docker command 
+
+- docker build -t auth-service:dev -f docker\development\Dockerfile .
+
+- docker run --name auth-service-container --rm -it -v "${PWD}:/auth-service/src/app" -v /auth-service/src/app/node_modules --env-file "${PWD}/.env" -p 5502:5502 -e NODE_ENV=development -e PORT=5502 auth-service:dev
+
+- docker ps
+
+- docker stop <container_ID> or <container_name>

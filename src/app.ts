@@ -7,7 +7,7 @@ const app = express();
 app.get('/', async (req: Request, res: Response) => {
   //   const error = createHttpError(401, 'you can not access this route');
   //   next(error);
-  res.send('Welcome to the API!');
+  res.send('Welcome to the API!!');
 });
 
 // global error handler
