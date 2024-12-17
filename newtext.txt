@@ -236,3 +236,21 @@ docker command
 - docker ps
 
 - docker stop <container_ID> or <container_name>
+
+- https://codersgyan.notion.site/Setting-up-PostgreSQL-in-a-Docker-Container-with-Persistent-Volume-58711388eb244c9fa1597d87783e3f92
+
+----------------------------
+
+Database setup
+
+- docker pull postgres
+- docker pull mongo
+- docker volume create mernpgdata
+- docker volume create mernMongoData
+- docker volume ls
+
+- docker run --rm --name mernpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v mernpgdata:/var/lib/postgresql/data -p 5432:5432 -d postgres
+
+- docker run --rm --name mernMongo-container -e MONGODB_USERNAME=parthdangroshiya13 -p 27017:27017 -e MONGODB_PASSWORD=cxxWyaLlXS6MNF39 -e MONGODB_DB=mern-pizza-app -e MONGODB_HOST=mongocluster  -v mernMongoData:/data/db -d mongo
+
+- 

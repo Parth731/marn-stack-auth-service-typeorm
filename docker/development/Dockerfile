@@ -18,6 +18,13 @@ COPY . .
 # Expose the port the app will run on
 EXPOSE 5502
 
+# env
+ENV MONGODB_USERNAME=parthdangroshiya13
+ENV MONGODB_PASSWORD=cxxWyaLlXS6MNF39
+ENV MONGODB_DB=mern-pizza-app
+ENV MONGODB_HOST=mongocluster
+
+
 # The command to run our app
 # cmd command run when docker run
 CMD ["npm", "run", "dev"]

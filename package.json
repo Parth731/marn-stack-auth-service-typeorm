@@ -7,7 +7,7 @@
     "start": "tsc && ts-node dist/server.js",
     "dev": "nodemon --legacy-watch src/server.ts",
     "test": "jest",
-    "test:watch": "jest --watch --runInBand --coverage",
+    "test:watch": "jest --watch --coverage",
     "build": "tsc",
     "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md,mjs}'",
     "format:check": "prettier --check .",
@@ -66,6 +66,9 @@
   },
   "dependencies": {
     "express": "^4.21.2",
-    "http-errors": "^2.0.0"
+    "http-errors": "^2.0.0",
+    "mongodb": "^5.9.2",
+    "pg": "^8.13.1",
+    "typeorm": "^0.3.20"
   }
 }
