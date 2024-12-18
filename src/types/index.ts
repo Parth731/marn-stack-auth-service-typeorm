@@ -9,6 +9,7 @@ export interface UserData {
 
 export interface userCreateType extends UserData {
   id: number;
+  role: 'customer' | 'admin' | 'manager';
 }
 
 export interface registerUserRequest extends Request {
