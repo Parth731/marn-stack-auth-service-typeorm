@@ -1,10 +1,17 @@
-import 'reflect-metadata';
+import * as dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
 import authRouter from './routes/auth';
+import path from 'path';
+
+dotenv.config({
+  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
+});
 
 const app = express();
+
+app.use(express.json());
 
 app.get('/', async (req: Request, res: Response) => {
   //   const error = createHttpError(401, 'you can not access this route');

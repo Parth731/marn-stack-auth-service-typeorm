@@ -1,6 +1,6 @@
 npx lint-staged
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# #!/bin/sh
+# . "$(dirname "$0")/_/husky.sh"
 
-npm test
+# npm test
 

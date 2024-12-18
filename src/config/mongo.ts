@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 export const connectToDatabase = async (): Promise<void> => {
   // Define the connection URI and types
-  const uri: string = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}.aiqxk.mongodb.net/${process.env.MONGODB_DB}`;
+  const uri: string = `mongodb+srv://${process.env.DB_MONGODB_USERNAME}:${process.env.DB_MONGODB_PASSWORD}@${process.env.DB_MONGODB_HOST}.aiqxk.mongodb.net/${process.env.DB_MONGODB_DB}`;
 
   // Create a new MongoClient instance with proper typing
   const client: MongoClient = new MongoClient(uri);
