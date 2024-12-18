@@ -3,7 +3,6 @@ import app from '../../src/app';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../src/config/data-source';
 import { User } from '../../src/entities/User';
-import { truncateTable } from '../utils';
 import { Roles } from '../../src/constants';
 
 describe('POST /auth/register', () => {
@@ -117,6 +116,48 @@ describe('POST /auth/register', () => {
       const users = await userRepository.find(); //fetch the table data
       expect(users[0]).toHaveProperty('role');
       expect(users[0].role).toBe(Roles.CUSTOMER);
+    });
+
+    it('should store the hashed password in the database', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'Parth',
+        lastName: 'Dangroshiya',
+        email: 'BxPnM@example.com',
+        password: '123456',
+      };
+
+      //Act
+      await request(app).post('/auth/register').send(userData);
+
+      //Assert
+      const userRepository = connection.getRepository(User);
+      const users = await userRepository.find(); //fetch the table data
+      expect(users[0].password).not.toBe(userData.password);
+      console.log(users[0].password);
+      // $2b$10$P7XmW85oYjqCXTbALOZsM.bzXdo1qbuQIBldVJrvr9XBTALOYGDCC
+      expect(users[0].password).toHaveLength(60);
+      expect(users[0].password).toMatch(/^\$2b\$\d+\$/); //check pattern of hash password `$2b$10$`
+    });
+
+    it('should return 400 status code if email already exists', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'Parth',
+        lastName: 'Dangroshiya',
+        email: 'BxPnM@example.com',
+        password: '123456',
+      };
+      const userRepository = connection.getRepository(User);
+      await userRepository.save({ ...userData, role: Roles.CUSTOMER });
+
+      //Act
+      const response = await request(app).post('/auth/register').send(userData);
+
+      const users = await userRepository.find();
+      //Assert
+      expect(response.statusCode).toBe(400);
+      expect(users).toHaveLength(1);
     });
   });
 });
