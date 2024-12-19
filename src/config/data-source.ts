@@ -5,6 +5,7 @@ config({ path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`) });
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from '../entities/User';
+import { RefreshToken } from '../entities/RefreshToken';
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // PostgreSQL setup
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
   //   database: 'marnstack_auth_service_test',
   //   entities: [`${__dirname}/**/entities/*.{ts,js}`],
   //   migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
-  entities: [User],
+  entities: [User, RefreshToken],
   synchronize: false, //don't use this in production, always keep false
   logging: false,
   migrations: [],

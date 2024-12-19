@@ -1,11 +1,13 @@
-import fs from 'fs';
-import path from 'path';
 import { NextFunction, Response } from 'express';
 import { registerUserRequest } from '../types';
 import { CreateUser } from '../services/userService';
 import logger from '../config/logger';
-import { JwtPayload, sign } from 'jsonwebtoken';
-import createHttpError from 'http-errors';
+import { JwtPayload } from 'jsonwebtoken';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  persistRefreshToken,
+} from '../services/tokenService';
 
 export const registerUser = async (
   req: registerUserRequest,
@@ -24,31 +26,19 @@ export const registerUser = async (
 
     logger.info('User has been registered', { id: user.id });
 
-    let privateKey: Buffer;
-    try {
-      privateKey = fs.readFileSync(
-        path.resolve(__dirname, '../../certs/private.pem'),
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      const error = createHttpError(500, 'something went wrong');
-      next(error);
-      return;
-    }
     const payload: JwtPayload = {
       sub: String(user.id),
       role: user.role,
     };
-    const accessToken = sign(payload, privateKey, {
-      algorithm: 'RS256',
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
-      issuer: process.env.ACCESS_TOKEN_ISSUER,
-    });
 
-    const refreshToken = sign(payload, process.env.REFRESH_TOKEN_SECRET!, {
-      algorithm: 'HS256',
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
-      issuer: process.env.REFRESH_TOKEN_ISSUER,
+    const accessToken = generateAccessToken(payload);
+
+    //persist refresh token
+    const newRefreshToken = await persistRefreshToken(user);
+
+    const refreshToken = generateRefreshToken({
+      ...payload,
+      id: String(newRefreshToken.id),
     });
 
     res.cookie('accessToken', accessToken, {
