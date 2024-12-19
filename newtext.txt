@@ -257,3 +257,11 @@ Database setup
 
 - https://icegreeen.medium.com/a-simple-guide-to-setting-up-a-project-with-node-js-typescript-postgres-and-typeorm-c5550bf1f4f0
 
+- https://gitfront.io/r/codersgyan/4QKc2vz4SuTU/mernspace-c-auth-service/
+
+- https://typeorm.io/
+
+-----------------------------------------------------------------------------------
+
+
+

@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../src/config/data-source';
 import { User } from '../../src/entities/User';
 import { Roles } from '../../src/constants';
+import { isJwt } from '../utils';
 // import { truncateTable } from '../utils';
 
 describe('POST /auth/register', () => {
@@ -164,6 +165,45 @@ describe('POST /auth/register', () => {
       //Assert
       expect(response.statusCode).toBe(400);
       expect(users).toHaveLength(1);
+    });
+
+    it('should return the access token and refresh token inside a cookie', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'Parth',
+        lastName: 'Dangroshiya',
+        email: 'BxPnM@example.com',
+        password: 'Parth@123',
+      };
+
+      //Act
+      const response = await request(app).post('/auth/register').send(userData);
+
+      interface Headers {
+        'set-cookie': string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [key: string]: any;
+      }
+      // Assert
+      let accessToken: string | null = null;
+      let refreshToken: string | null = null;
+      const cookies = (response.headers as Headers)['set-cookie'] || [];
+      // accessToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjkzOTA5Mjc2LCJleHAiOjE2OTM5MDkzMzYsImlzcyI6Im1lcm5zcGFjZSJ9.KetQMEzY36vxhO6WKwSR-P_feRU1yI-nJtp6RhCEZQTPlQlmVsNTP7mO-qfCdBr0gszxHi9Jd1mqf-hGhfiK8BRA_Zy2CH9xpPTBud_luqLMvfPiz3gYR24jPjDxfZJscdhE_AIL6Uv2fxCKvLba17X0WbefJSy4rtx3ZyLkbnnbelIqu5J5_7lz4aIkHjt-rb_sBaoQ0l8wE5KzyDNy7mGUf7cI_yR8D8VlO7x9llbhvCHF8ts6YSBRBt_e2Mjg5txtfBaDq5auCTXQ2lmnJtMb75t1nAFu8KwQPrDYmwtGZDkHUcpQhlP7R-y3H99YnrWpXbP8Zr_oO67hWnoCSw; Max-Age=43200; Domain=localhost; Path=/; Expires=Tue, 05 Sep 2023 22:21:16 GMT; HttpOnly; SameSite=Strict
+      cookies.forEach((cookie) => {
+        if (cookie.startsWith('accessToken=')) {
+          accessToken = cookie.split(';')[0].split('=')[1];
+        }
+
+        if (cookie.startsWith('refreshToken=')) {
+          refreshToken = cookie.split(';')[0].split('=')[1];
+        }
+      });
+      expect(accessToken).not.toBeNull();
+      expect(refreshToken).not.toBeNull();
+
+      // check jwt token
+      expect(isJwt(accessToken)).toBeTruthy();
+      expect(isJwt(refreshToken)).toBeTruthy();
     });
   });
 
