@@ -1,9 +1,8 @@
 import * as dotenv from 'dotenv';
-import express, { NextFunction, Request, Response } from 'express';
-import logger from './config/logger';
-import { HttpError } from 'http-errors';
+import express, { Request, Response } from 'express';
 import authRouter from './routes/auth';
 import path from 'path';
+import { errorHandler } from './utils/errorHandler';
 
 dotenv.config({
   path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
@@ -22,20 +21,6 @@ app.get('/', async (req: Request, res: Response) => {
 app.use('/auth', authRouter);
 
 // global error handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
-  logger.error(error.message);
-  const statusCode = error.statusCode || 500;
-  res.status(statusCode).json({
-    error: [
-      {
-        type: error.name,
-        message: error.message,
-        path: '',
-        location: '',
-      },
-    ],
-  });
-});
+app.use(errorHandler);
 
 export default app;

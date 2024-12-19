@@ -40,7 +40,7 @@ export default [
       'prefer-template': 'warn',
       'no-require-imports': 'off',
 
-      'no-console': 'off',
+      'no-console': 'warn',
       'dot-notation': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/require-await': 'off',

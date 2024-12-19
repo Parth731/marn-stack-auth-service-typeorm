@@ -8,16 +8,14 @@ export const registerUser = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  const { firstName, lastName, email, password } = req.body;
+  logger.debug('New request to register a user', {
+    firstName,
+    lastName,
+    email,
+    password: '******',
+  });
   try {
-    const { firstName, lastName, email, password } = req.body;
-
-    logger.debug('New request to register a user', {
-      firstName,
-      lastName,
-      email,
-      password: '******',
-    });
-
     const user = await CreateUser({ firstName, lastName, email, password });
 
     logger.info('User has been registered', { id: user.id });
@@ -25,7 +23,7 @@ export const registerUser = async (
     res.status(201).json({
       message: 'user created!!',
       data: user,
-      error: null,
+      error: false,
     });
   } catch (error) {
     next(error);

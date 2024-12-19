@@ -10,6 +10,7 @@ export const connectToDatabase = async (): Promise<void> => {
   try {
     // Connect to the MongoDB cluster
     await client.connect();
+    // eslint-disable-next-line no-console
     console.log('Connected to MongoDB Atlas!');
 
     // Get a reference to the database and collection
@@ -22,6 +23,7 @@ export const connectToDatabase = async (): Promise<void> => {
 
     // console.log('Document inserted with _id:', result.insertedId);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error connecting to MongoDB Atlas:', error);
   }
 };

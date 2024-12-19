@@ -1,9 +1,8 @@
 import app from './app';
 import { startApp } from './config/DB';
-import { Config } from './config/index';
 import logger from './config/logger';
 
-const PORT = Config.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
@@ -13,6 +12,7 @@ const startServer = async () => {
       startApp();
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
     process.exit(1);
   }

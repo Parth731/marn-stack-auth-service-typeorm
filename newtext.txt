@@ -239,6 +239,8 @@ docker command
 
 - https://codersgyan.notion.site/Setting-up-PostgreSQL-in-a-Docker-Container-with-Persistent-Volume-58711388eb244c9fa1597d87783e3f92
 
+
+
 ----------------------------
 
 Database setup
@@ -253,4 +255,5 @@ Database setup
 
 - docker run --rm --name mernMongo-container -e MONGODB_USERNAME=parthdangroshiya13 -p 27017:27017 -e MONGODB_PASSWORD=cxxWyaLlXS6MNF39 -e MONGODB_DB=mern-pizza-app -e MONGODB_HOST=mongocluster  -v mernMongoData:/data/db -d mongo
 
-- 
+- https://icegreeen.medium.com/a-simple-guide-to-setting-up-a-project-with-node-js-typescript-postgres-and-typeorm-c5550bf1f4f0
+
