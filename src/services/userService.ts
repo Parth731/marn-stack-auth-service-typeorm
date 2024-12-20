@@ -6,15 +6,26 @@ import { Roles, saltRounds } from '../constants';
 import bcrypt from 'bcrypt';
 
 export const CreateUser = async ({
+  userName,
   firstName,
   lastName,
   email,
   password,
 }: UserData): Promise<userCreateType> => {
   const userRepository = AppDataSource.getRepository(User);
+
+  //userName unique
+  const uniqueUserName = await userRepository.findOne({
+    where: { userName: userName },
+  });
+  if (uniqueUserName) {
+    const error = createHttpError(400, 'Username is already exists!');
+    throw error;
+  }
+
   //email unique
-  const user = await userRepository.findOne({ where: { email: email } });
-  if (user) {
+  const uniqueEmail = await userRepository.findOne({ where: { email: email } });
+  if (uniqueEmail) {
     const error = createHttpError(400, 'Email is already exists!');
     throw error;
   }
@@ -24,6 +35,7 @@ export const CreateUser = async ({
 
   try {
     const user = await userRepository.save({
+      userName,
       firstName,
       lastName,
       email,

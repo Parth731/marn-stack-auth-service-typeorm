@@ -8,8 +8,20 @@ import { isJwt } from '../utils';
 import { RefreshToken } from '../../src/entities/RefreshToken';
 // import { truncateTable } from '../utils';
 
-describe('POST /auth/register', () => {
+describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
   let connection: DataSource;
+  const baseUrl = '/pizza-app/auth-service/api/v1/auth/register';
+  const UserInfo = () => {
+    const userData = {
+      userName: 'parth731',
+      firstName: 'Parth',
+      lastName: 'Dangroshiya',
+      email: 'BxPnM@example.com',
+      password: 'Parth@123',
+    };
+
+    return userData;
+  };
 
   beforeAll(async () => {
     connection = await AppDataSource.initialize();
@@ -31,16 +43,17 @@ describe('POST /auth/register', () => {
     it('should return the 201 status code', async () => {
       //AAA
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-        // role: 'customer',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      //   // role: 'customer',
+      // };
 
       //Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       //Assert
       expect(response.statusCode).toBe(201);
@@ -49,16 +62,17 @@ describe('POST /auth/register', () => {
     it('should return valid json response', async () => {
       //AAA
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-        // role: 'customer',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      //   // role: 'customer',
+      // };
 
       //Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       //Assert
       expect(response.header['content-type']).toEqual(
@@ -68,15 +82,16 @@ describe('POST /auth/register', () => {
 
     it('should persist the user in database', async () => {
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
       //Act
-      await request(app).post('/auth/register').send(userData);
+      await request(app).post(baseUrl).send(userData);
 
       //Assert
       const userRepository = connection.getRepository(User);
@@ -88,16 +103,15 @@ describe('POST /auth/register', () => {
     });
 
     it('should return an id of the created user', async () => {
-      const userPayload = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userPayload = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
-      const response = await request(app)
-        .post('/auth/register')
-        .send(userPayload);
+      const response = await request(app).post(baseUrl).send(userData);
 
       expect(response.status).toBe(201);
 
@@ -108,15 +122,16 @@ describe('POST /auth/register', () => {
 
     it('should assign a customer role', async () => {
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
       //Act
-      await request(app).post('/auth/register').send(userData);
+      await request(app).post(baseUrl).send(userData);
 
       //Assert
       const userRepository = connection.getRepository(User);
@@ -128,15 +143,16 @@ describe('POST /auth/register', () => {
 
     it('should store the hashed password in the database', async () => {
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
       //Act
-      await request(app).post('/auth/register').send(userData);
+      await request(app).post(baseUrl).send(userData);
 
       //Assert
       const userRepository = connection.getRepository(User);
@@ -150,17 +166,18 @@ describe('POST /auth/register', () => {
 
     it('should return 400 status code if email already exists', async () => {
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
       const userRepository = connection.getRepository(User);
       await userRepository.save({ ...userData, role: Roles.CUSTOMER });
 
       //Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
       const users = await userRepository.find();
 
       //Assert
@@ -170,15 +187,16 @@ describe('POST /auth/register', () => {
 
     it('should return the access token and refresh token inside a cookie', async () => {
       //Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
       //Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       interface Headers {
         'set-cookie': string[];
@@ -209,36 +227,53 @@ describe('POST /auth/register', () => {
 
     it('should store the refresh token in the database', async () => {
       // Arrange
-      const userData = {
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-      };
+      const userData = UserInfo();
+      // const userData = {
+      //   firstName: 'Parth',
+      //   lastName: 'Dangroshiya',
+      //   email: 'BxPnM@example.com',
+      //   password: 'Parth@123',
+      // };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       const refreshTokenRepo = connection.getRepository(RefreshToken);
-      const refreshTokens = await refreshTokenRepo.find();
-      console.log(response.body, refreshTokens);
+      // const refreshTokens = await refreshTokenRepo.find();
       const tokens = await refreshTokenRepo
         .createQueryBuilder('refreshToken')
         .where('refreshToken.userId = :userId', {
           userId: response.body.data.id,
         })
         .getMany();
-
-      console.log(tokens);
       expect(tokens).toHaveLength(1);
     });
   });
 
   describe('Field are missing', () => {
+    it('should return 400 status code if Username field is missing', async () => {
+      // Arrange
+      const userData = {
+        userName: '',
+        firstName: 'Parth',
+        lastName: 'Dangroshiya',
+        email: 'BxPnM@example.com',
+        password: 'Parth@123',
+      };
+      // Act
+      const response = await request(app).post(baseUrl).send(userData);
+
+      // Assert
+      expect(response.statusCode).toBe(400);
+      const userRepository = connection.getRepository(User);
+      const users = await userRepository.find();
+      expect(users).toHaveLength(0);
+    });
     it('should return 400 status code if email field is missing', async () => {
       //Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: '',
@@ -246,7 +281,7 @@ describe('POST /auth/register', () => {
       };
 
       //Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       //Assert
       expect(response.statusCode).toBe(400);
@@ -258,6 +293,7 @@ describe('POST /auth/register', () => {
     it('should return 400 status code if firstName field is missing', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: '',
         lastName: 'Dangroshiya',
         email: 'BxPnM@example.com',
@@ -265,7 +301,7 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.statusCode).toBe(400);
@@ -276,6 +312,7 @@ describe('POST /auth/register', () => {
     it('should return 400 status code if lastName field is missing', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: '',
         email: 'BxPnM@example.com',
@@ -283,7 +320,7 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.statusCode).toBe(400);
@@ -294,6 +331,7 @@ describe('POST /auth/register', () => {
     it('should return 400 status code if password field is missing', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: 'BxPnM@example.com',
@@ -301,7 +339,7 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.statusCode).toBe(400);
@@ -315,6 +353,7 @@ describe('POST /auth/register', () => {
     it('should trim the email field', async () => {
       //Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: ' BxPnM@example.com ',
@@ -322,7 +361,7 @@ describe('POST /auth/register', () => {
       };
 
       //Act
-      await request(app).post('/auth/register').send(userData);
+      await request(app).post(baseUrl).send(userData);
 
       //Assert
       const userRepository = connection.getRepository(User);
@@ -333,6 +372,7 @@ describe('POST /auth/register', () => {
     it('should return 400 status code if email is a not valid', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: 'BxPnMexample.com', // Invalid email format
@@ -340,7 +380,7 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.statusCode).toBe(400);
@@ -351,6 +391,7 @@ describe('POST /auth/register', () => {
     it('should return 400 status code if password length is less than 8 and alpha-numeric and mustbe atleast one special character and one capital letter', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: 'BxPnM@example.com',
@@ -358,7 +399,26 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
+
+      // Assert
+      expect(response.statusCode).toBe(400);
+      const userRepository = connection.getRepository(User);
+      const users = await userRepository.find();
+      expect(users).toHaveLength(0);
+    });
+    it('should return 400 status code if Username alpha-numeric', async () => {
+      // Arrange
+      const userData = {
+        userName: 'parth@731',
+        firstName: 'Parth',
+        lastName: 'Dangroshiya',
+        email: 'BxPnM@example.com',
+        password: 'Parth@123', // Invalid password format (less than 8 characters)
+      };
+
+      // Act
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.statusCode).toBe(400);
@@ -369,6 +429,7 @@ describe('POST /auth/register', () => {
     it('should return an array of error messages if email is missing', async () => {
       // Arrange
       const userData = {
+        userName: 'parth731',
         firstName: 'Parth',
         lastName: 'Dangroshiya',
         email: '', // Missing email
@@ -376,7 +437,7 @@ describe('POST /auth/register', () => {
       };
 
       // Act
-      const response = await request(app).post('/auth/register').send(userData);
+      const response = await request(app).post(baseUrl).send(userData);
 
       // Assert
       expect(response.body).toHaveProperty('errors');

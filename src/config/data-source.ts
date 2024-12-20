@@ -18,7 +18,10 @@ export const AppDataSource = new DataSource({
   //   entities: [`${__dirname}/**/entities/*.{ts,js}`],
   //   migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
   entities: [User, RefreshToken],
-  synchronize: false, //don't use this in production, always keep false
+  synchronize:
+    process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev'
+      ? true
+      : false, //don't use this in production, always keep false
   logging: false,
   migrations: [],
   subscribers: [],

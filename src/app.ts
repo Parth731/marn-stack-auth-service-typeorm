@@ -12,13 +12,13 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', async (req: Request, res: Response) => {
+app.get(`${process.env.BASE_URL}/`, async (req: Request, res: Response) => {
   //   const error = createHttpError(401, 'you can not access this route');
   //   next(error);
   res.send('Welcome to the API!!!');
 });
 
-app.use('/auth', authRouter);
+app.use(`${process.env.BASE_URL}/auth`, authRouter);
 
 // global error handler
 app.use(errorHandler);

@@ -265,5 +265,15 @@ Database setup
 
 - https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
+- swagger implements
 
+- https://dev.to/desmondsanctity/documenting-nodejs-api-using-swagger-4klp
+
+- https://github.com/TomDoesTech/REST-API-Tutorial-Updated/tree/main
+
+- https://github.com/DesmondSanctity/node-js-swagger
+
+- https://github.com/PardeepBhasin/NodeJSPlaylist/tree/main/NodeJSSession8ApiDocs
+
+- https://www.youtube.com/watch?v=5aryMKiBEKY
 

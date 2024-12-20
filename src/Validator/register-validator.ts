@@ -1,6 +1,25 @@
 import { checkSchema } from 'express-validator';
 
 export default checkSchema({
+  userName: {
+    in: ['body'],
+    trim: true,
+    optional: false,
+    notEmpty: {
+      errorMessage: 'Username is required',
+    },
+    matches: {
+      options: [/^[a-zA-Z0-9]+$/],
+      errorMessage: 'Username must only contain alphanumeric characters',
+    },
+    isString: {
+      errorMessage: 'Username must be a string',
+    },
+    isLength: {
+      options: { min: 3, max: 15 },
+      errorMessage: 'Username must be between 3 and 15 characters',
+    },
+  },
   firstName: {
     in: ['body'],
     trim: true,

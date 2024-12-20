@@ -15,7 +15,7 @@ export const errorHandler = (
     error: [
       {
         type: error.name,
-        message: error.message,
+        message: error.message || 'Internal Server Error',
         path: '',
         location: '',
       },

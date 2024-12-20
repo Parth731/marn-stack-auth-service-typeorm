@@ -1,20 +1,25 @@
 import app from './app';
 import { startApp } from './config/DB';
 import logger from './config/logger';
+import swaggerDocs from './utils/swagger';
 
 const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    app.listen(PORT, () => {
+    await startApp();
+    logger.info('Database connected successfully!');
+    swaggerDocs(app, Number(PORT));
+    app.listen(PORT, async () => {
       logger.info(`Server running on port: ${PORT}`);
-      // connectToDatabase();
-      startApp();
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-    process.exit(1);
+    if (error instanceof Error) {
+      logger.error(error.message);
+      setTimeout(() => {
+        process.exit(1);
+      }, 1000);
+    }
   }
 };
 
