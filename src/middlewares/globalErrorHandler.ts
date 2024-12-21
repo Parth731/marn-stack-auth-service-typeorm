@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpError } from 'http-errors';
 import logger from '../config/logger';
 
-export const errorHandler = (
+export const globalErrorHandler = (
   error: HttpError,
   req: Request,
   res: Response,
@@ -10,7 +10,7 @@ export const errorHandler = (
   next: NextFunction,
 ): void => {
   logger.error(error.message);
-  const statusCode = error.statusCode || 500;
+  const statusCode = error.statusCode || error.status || 500;
   res.status(statusCode).json({
     error: [
       {

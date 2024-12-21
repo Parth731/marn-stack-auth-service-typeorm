@@ -1,8 +1,9 @@
-import express from 'express';
-import { loginUser, registerUser } from '../controllers/AuthController';
+import express, { RequestHandler } from 'express';
+import { loginUser, registerUser, self } from '../controllers/AuthController';
 import registerValidator from '../Validator/register-validator';
 import { validate } from '../Validator/ValidationChain';
 import loginValidator from '../Validator/login-validator';
+import authenticate from '../middlewares/authenticate';
 
 const router = express.Router();
 /**
@@ -49,5 +50,6 @@ const router = express.Router();
 router.post('/register', validate(registerValidator), registerUser);
 
 router.post('/login', validate(loginValidator), loginUser);
+router.get('/self', authenticate, self as unknown as RequestHandler);
 
 export default router;

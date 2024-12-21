@@ -1,6 +1,10 @@
 import { NextFunction, Response } from 'express';
-import { loginUserRequest, registerUserRequest } from '../types';
-import { CreateUser, findByEmailAndUserName } from '../services/userService';
+import { AuthRequest, loginUserRequest, registerUserRequest } from '../types';
+import {
+  CreateUser,
+  findByEmailAndUserName,
+  findById,
+} from '../services/userService';
 import logger from '../config/logger';
 import { JwtPayload } from 'jsonwebtoken';
 import {
@@ -145,4 +149,10 @@ export const loginUser = async (
   } catch (error) {
     next(error);
   }
+};
+
+export const self = async (req: AuthRequest, res: Response): Promise<void> => {
+  //req.auth.id
+  const user = await findById(Number(req.auth.sub));
+  res.status(200).json({ ...user, password: undefined });
 };

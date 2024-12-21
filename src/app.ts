@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
 import authRouter from './routes/auth';
 import path from 'path';
-import { errorHandler } from './utils/errorHandler';
+import { globalErrorHandler } from './middlewares/globalErrorHandler';
 
 dotenv.config({
   path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
@@ -10,6 +11,8 @@ dotenv.config({
 
 const app = express();
 
+app.use(express.static('public'));
+app.use(cookieParser());
 app.use(express.json());
 
 app.get(`${process.env.BASE_URL}/`, async (req: Request, res: Response) => {
@@ -21,6 +24,6 @@ app.get(`${process.env.BASE_URL}/`, async (req: Request, res: Response) => {
 app.use(`${process.env.BASE_URL}/auth`, authRouter);
 
 // global error handler
-app.use(errorHandler);
+app.use(globalErrorHandler);
 
 export default app;

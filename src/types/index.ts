@@ -26,3 +26,15 @@ export interface loginUserType {
 export interface loginUserRequest extends Request {
   body: loginUserType;
 }
+
+export type AuthCookies = {
+  accessToken: string;
+};
+
+export interface AuthRequest extends Request {
+  auth: {
+    sub: string;
+    id: number;
+    role: string;
+  };
+}
