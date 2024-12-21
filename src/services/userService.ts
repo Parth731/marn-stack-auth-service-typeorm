@@ -52,3 +52,21 @@ export const CreateUser = async ({
     throw customError;
   }
 };
+
+export const findByEmailAndUserName = async (
+  email: string,
+  userName: string,
+): Promise<User> => {
+  const userRepository = AppDataSource.getRepository(User);
+  const user = await userRepository.findOne({
+    where: { email: email, userName: userName },
+  });
+  if (!user) {
+    const error = createHttpError(
+      400,
+      'Username or Email or Password does not match!',
+    );
+    throw error;
+  }
+  return user;
+};

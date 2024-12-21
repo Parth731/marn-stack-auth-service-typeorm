@@ -1,7 +1,8 @@
 import express from 'express';
-import { registerUser } from '../controllers/AuthController';
+import { loginUser, registerUser } from '../controllers/AuthController';
 import registerValidator from '../Validator/register-validator';
 import { validate } from '../Validator/ValidationChain';
+import loginValidator from '../Validator/login-validator';
 
 const router = express.Router();
 /**
@@ -46,5 +47,7 @@ const router = express.Router();
  *        description: Server Error
  */
 router.post('/register', validate(registerValidator), registerUser);
+
+router.post('/login', validate(loginValidator), loginUser);
 
 export default router;

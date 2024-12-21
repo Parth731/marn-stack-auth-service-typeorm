@@ -16,3 +16,13 @@ export interface userCreateType extends UserData {
 export interface registerUserRequest extends Request {
   body: UserData;
 }
+
+export interface loginUserType {
+  userName: string;
+  email: string;
+  password: string;
+}
+
+export interface loginUserRequest extends Request {
+  body: loginUserType;
+}
