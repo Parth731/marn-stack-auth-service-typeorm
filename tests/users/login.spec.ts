@@ -38,6 +38,28 @@ describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
     await connection.destroy();
   });
 
+  it('should return the 200 if username or email or password tested successfully', async () => {
+    // Arrange
+    const userData = UserInfo();
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const userRepository = connection.getRepository(User);
+    await userRepository.save({
+      ...userData,
+      password: hashedPassword,
+      role: Roles.CUSTOMER,
+    });
+
+    // Act
+    const responsePassword = await request(app).post(baseUrl).send({
+      userName: userData.userName,
+      email: userData.email,
+      password: userData.password,
+    });
+
+    // Assert
+    expect(responsePassword.statusCode).toBe(200);
+  });
+
   it('should return the access token and refresh token inside a cookie', async () => {
     // Arrange
     const userData = UserInfo();
