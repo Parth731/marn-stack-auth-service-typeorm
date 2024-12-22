@@ -14,14 +14,14 @@ export const CreateUser = async ({
 }: UserData): Promise<userCreateType> => {
   const userRepository = AppDataSource.getRepository(User);
 
-  //userName unique
-  // const uniqueUserName = await userRepository.findOne({
-  //   where: { userName: userName },
-  // });
-  // if (uniqueUserName) {
-  //   const error = createHttpError(400, 'Username is already exists!');
-  //   throw error;
-  // }
+  // userName unique
+  const uniqueUserName = await userRepository.findOne({
+    where: { userName: userName },
+  });
+  if (uniqueUserName) {
+    const error = createHttpError(400, 'Username is already exists!');
+    throw error;
+  }
 
   //email unique
   const uniqueEmail = await userRepository.findOne({ where: { email: email } });
@@ -81,5 +81,7 @@ export const findById = async (id: number): Promise<User | null> => {
     //   tenant: true,
     // },
   });
+
   return user;
+  // throw createHttpError(404, 'User not found');
 };

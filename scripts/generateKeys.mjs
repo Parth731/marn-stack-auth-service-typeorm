@@ -19,3 +19,5 @@ console.log('Private key', privateKey);
 
 fs.writeFileSync('certs/private.pem', privateKey);
 fs.writeFileSync('certs/public.pem', publicKey);
+
+// command:- node generateKey.mjs => to generated private key and public key

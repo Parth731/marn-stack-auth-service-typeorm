@@ -51,3 +51,10 @@ export const persistRefreshToken = async (
   });
   return newRefreshToken;
 };
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const deleteRefreshToken = async (tokenId: number) => {
+  const refreshTokenRepository: Repository<RefreshToken> =
+    AppDataSource.getRepository(RefreshToken);
+  return refreshTokenRepository.delete({ id: tokenId });
+};

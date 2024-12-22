@@ -29,12 +29,17 @@ export interface loginUserRequest extends Request {
 
 export type AuthCookies = {
   accessToken: string;
+  refreshToken: string;
 };
 
 export interface AuthRequest extends Request {
   auth: {
     sub: string;
-    id: number;
+    id?: string;
     role: string;
   };
+}
+
+export interface IRefreshTokenPayload {
+  id: string;
 }
