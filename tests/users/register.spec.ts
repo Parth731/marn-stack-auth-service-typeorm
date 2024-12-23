@@ -1,11 +1,11 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { DataSource } from 'typeorm';
-import { AppDataSource } from '../../src/config/data-source';
-import { User } from '../../src/entities/User';
 import { Roles } from '../../src/constants';
 import { isJwt } from '../utils';
-import { RefreshToken } from '../../src/entities/RefreshToken';
+import { AppDataSource } from '../../src/database/data-source';
+import { User } from '../../src/database/entities/User';
+import { RefreshToken } from '../../src/database/entities/RefreshToken';
 // import { truncateTable } from '../utils';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {

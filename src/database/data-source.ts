@@ -1,11 +1,13 @@
 import { config } from 'dotenv';
 import path from 'path';
 
-config({ path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`) });
+config({
+  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV || 'dev'}`),
+});
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from '../entities/User';
-import { RefreshToken } from '../entities/RefreshToken';
+import { User } from './entities/User';
+import { RefreshToken } from './entities/RefreshToken';
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // PostgreSQL setup
@@ -14,16 +16,11 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  //   database: 'marnstack_auth_service_test',
-  //   entities: [`${__dirname}/**/entities/*.{ts,js}`],
-  //   migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
-  entities: [User, RefreshToken],
-  synchronize:
-    process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev'
-      ? true
-      : false, //don't use this in production, always keep false
+  synchronize: true, //don't use this in production, always keep false
   logging: false,
-  migrations: [],
+  entities: [User, RefreshToken],
+  // entities: ['src/database/entities/*.ts'], // Add all your entities here
+  // migrations: ['src/database/migrations/*.ts'],
   subscribers: [],
 });
 

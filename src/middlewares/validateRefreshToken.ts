@@ -1,18 +1,20 @@
 import { expressjwt } from 'express-jwt';
 import { Request } from 'express';
 import { AuthCookies, IRefreshTokenPayload } from '../types';
-import { AppDataSource } from '../config/data-source';
-import { RefreshToken } from '../entities/RefreshToken';
+import { RefreshToken } from '../database/entities/RefreshToken';
 import logger from '../config/logger';
+import { AppDataSource } from '../database/data-source';
 
 export default expressjwt({
   secret: process.env.REFRESH_TOKEN_SECRET!,
   algorithms: ['HS256'],
+  // get refresh token
   getToken(req: Request) {
     const { refreshToken } = req.cookies as AuthCookies;
 
     return refreshToken;
   },
+  // validate to refresh token
   async isRevoked(req: Request, token) {
     /**
      * 

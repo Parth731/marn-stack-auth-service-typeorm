@@ -1,9 +1,9 @@
 import createHttpError from 'http-errors';
-import { AppDataSource } from '../config/data-source';
-import { User } from '../entities/User';
+import { User } from '../database/entities/User';
 import { userCreateType, UserData } from '../types';
 import { Roles, saltRounds } from '../constants';
 import bcrypt from 'bcrypt';
+import { AppDataSource } from '../database/data-source';
 
 export const CreateUser = async ({
   userName,

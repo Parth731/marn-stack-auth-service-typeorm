@@ -1,7 +1,6 @@
 import { Express, Request, Response } from 'express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { version } from '../../package.json';
 import logger from '../config/logger';
 
 const options: swaggerJsdoc.Options = {
@@ -10,7 +9,7 @@ const options: swaggerJsdoc.Options = {
     info: {
       title: 'Pizza-app Auth service',
       description: 'Pizza-app Auth service API documentation',
-      version,
+      version: '1.0.0',
     },
     components: {
       securitySchemes: {

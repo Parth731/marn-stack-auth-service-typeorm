@@ -1,6 +1,7 @@
 import express, { RequestHandler } from 'express';
 import {
   loginUser,
+  logout,
   refresh,
   registerUser,
   self,
@@ -10,6 +11,7 @@ import { validate } from '../Validator/ValidationChain';
 import loginValidator from '../Validator/login-validator';
 import authenticate from '../middlewares/authenticate';
 import validateRefreshToken from '../middlewares/validateRefreshToken';
+import parseRefreshToken from '../middlewares/parseRefreshToken';
 
 const router = express.Router();
 /**
@@ -61,6 +63,12 @@ router.post(
   '/refresh',
   validateRefreshToken,
   refresh as unknown as RequestHandler,
+);
+router.post(
+  '/logout',
+  authenticate,
+  parseRefreshToken,
+  logout as unknown as RequestHandler,
 );
 
 export default router;

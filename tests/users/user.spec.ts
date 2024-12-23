@@ -1,11 +1,11 @@
 import createJWKSMock from 'mock-jwks';
 // import jwt from 'jsonwebtoken';
 import { DataSource } from 'typeorm';
-import { AppDataSource } from '../../src/config/data-source';
-import { User } from '../../src/entities/User';
 import { Roles } from '../../src/constants/index';
 import request from 'supertest';
 import app from '../../src/app';
+import { User } from '../../src/database/entities/User';
+import { AppDataSource } from '../../src/database/data-source';
 
 process.env.REFRESH_TOKEN_SECRET = 'test-secret';
 describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {

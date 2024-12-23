@@ -130,7 +130,7 @@ export const loginUser = async (
 
 export const self = async (req: AuthRequest, res: Response): Promise<void> => {
   //req.auth.id
-  const user = await findById(Number(req.auth?.sub));
+  const user = await findById(Number(req.auth.sub));
   res.status(200).json({ ...user, password: undefined });
 };
 
@@ -190,6 +190,28 @@ export const refresh = async (
     res.status(200).json({
       message: 'refresh token and access token generated successfully',
       data: { id: existUserName.id },
+      error: false,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    await deleteRefreshToken(Number(req.auth.id));
+
+    logger.info('Refresh Token has been deleted', { id: req.auth.id });
+    logger.info('User has been logout', { id: req.auth.sub });
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    res.status(200).json({
+      message: 'loggout successfully',
+      data: null,
       error: false,
     });
   } catch (error) {

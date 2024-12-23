@@ -2,11 +2,11 @@ import createHttpError from 'http-errors';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import path from 'path';
 import fs from 'fs';
-import { User } from '../entities/User';
-import { AppDataSource } from '../config/data-source';
-import { RefreshToken } from '../entities/RefreshToken';
+import { User } from '../database/entities/User';
+import { RefreshToken } from '../database/entities/RefreshToken';
 import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
+import { AppDataSource } from '../database/data-source';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: Buffer;

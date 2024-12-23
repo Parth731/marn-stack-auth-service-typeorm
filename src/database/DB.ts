@@ -2,7 +2,8 @@ import { AppDataSource } from './data-source';
 
 export const startApp = async (): Promise<void> => {
   try {
-    await AppDataSource.initialize();
+    const dataSource = await AppDataSource.initialize();
+    // await dataSource.runMigrations();
     // eslint-disable-next-line no-console
     console.log('PostgreSQL connected successfully!');
 

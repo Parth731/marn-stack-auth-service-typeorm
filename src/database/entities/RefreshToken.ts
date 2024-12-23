@@ -11,19 +11,19 @@ import { User } from './User';
 @Entity({ name: 'refreshTokens' })
 export class RefreshToken {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ type: 'timestamp' })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   // many refresh tokens to one user
   @ManyToOne(() => User)
-  user: User;
+  user!: User;
   // userId
 
   @UpdateDateColumn()
-  updatedAt: number;
+  updatedAt!: number;
 
   @CreateDateColumn()
-  createdAt: number;
+  createdAt!: number;
 }

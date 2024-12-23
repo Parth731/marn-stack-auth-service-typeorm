@@ -1,5 +1,5 @@
 import app from './app';
-import { startApp } from './config/DB';
+import { startApp } from './database/DB';
 import logger from './config/logger';
 import swaggerDocs from './utils/swagger';
 

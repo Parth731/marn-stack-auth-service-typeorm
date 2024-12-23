@@ -6,7 +6,7 @@ import path from 'path';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 
 dotenv.config({
-  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
+  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV || 'dev'}`),
 });
 
 const app = express();
