@@ -279,6 +279,7 @@ Database setup
 
 - https://medium.com/@ravipatel.it/step-by-step-guide-to-deploying-a-mern-stack-application-using-docker-compose-6e2dd7845b85
 
+- https://glitchbone.github.io/vscode-base16-term/#/pico
 
 ---------------------------------------------------------------------
 
