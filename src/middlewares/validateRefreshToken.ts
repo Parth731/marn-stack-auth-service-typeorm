@@ -43,6 +43,7 @@ export default expressjwt({
           },
         },
       });
+      console.log('isRevoked', refreshToken);
       return refreshToken === null;
     } catch (error) {
       logger.error(`Error while getting the refresh token: ${error}`, {

@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  synchronize: false, //don't use this in production, always keep false
+  synchronize: true, //don't use this in production, always keep false
   logging: false,
   // entities: [User, RefreshToken],
   entities: ['src/database/entities/*.ts'], // Add all your entities here
