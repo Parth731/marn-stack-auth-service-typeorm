@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: configEnv.dbUsername,
   password: configEnv.dbPassword,
   database: configEnv.dbDatabase,
-  synchronize: true, //don't use this in production, always keep false
+  synchronize: false, //don't use this in production, always keep false
   logging: false,
   // entities: [User, RefreshToken],
   entities: ['src/database/entities/*.ts'], // Add all your entities here
