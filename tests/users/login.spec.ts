@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { Roles } from '../../src/constants/index';
 import request from 'supertest';
 import app from '../../src/app';
 import { isJwt } from '../utils';
 import { AppDataSource } from '../../src/database/data-source';
 import { User } from '../../src/database/entities/User';
+import { Roles } from '../../src/types';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
   let connection: DataSource;

@@ -63,7 +63,7 @@
     "winston": "^3.17.0",
     "yargs": "^17.7.2"
   },
-   "lint-staged": {
+  "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx}": [
       "eslint --fix",
       "prettier --write"
@@ -73,6 +73,7 @@
     ]
   },
   "dependencies": {
+    "@types/mongoose": "^5.11.96",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",
@@ -80,6 +81,7 @@
     "http-errors": "^2.0.0",
     "jwks-rsa": "^3.1.0",
     "mongodb": "^5.9.2",
+    "mongoose": "^8.9.2",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "rsa-pem-to-jwk": "^1.1.3",

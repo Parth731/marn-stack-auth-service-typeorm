@@ -1,18 +1,14 @@
+import createHttpError from 'http-errors';
+import logger from '../config/logger';
 import { AppDataSource } from './data-source';
 
 export const startApp = async (): Promise<void> => {
   try {
     await AppDataSource.initialize();
     // await dataSource.runMigrations();
-    // eslint-disable-next-line no-console
-    console.log('PostgreSQL connected successfully!');
-
-    // await MongoDataSource.initialize();
-    // console.log('MongoDB connected successfully!');
-
-    // You can now use repositories or managers for CRUD operations
+    logger.info('✅ Database connected successfully!');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error during Data Source initialization:', error);
+    logger.error(`❌ Database connection failed: ${error}`);
+    throw createHttpError(500, '❌ Database connection failed');
   }
 };

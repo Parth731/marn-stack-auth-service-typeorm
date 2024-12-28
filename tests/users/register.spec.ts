@@ -1,11 +1,11 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { DataSource } from 'typeorm';
-import { Roles } from '../../src/constants';
 import { isJwt } from '../utils';
 import { AppDataSource } from '../../src/database/data-source';
 import { User } from '../../src/database/entities/User';
 import { RefreshToken } from '../../src/database/entities/RefreshToken';
+import { Roles } from '../../src/types';
 // import { truncateTable } from '../utils';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
@@ -115,8 +115,8 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
       expect(response.status).toBe(201);
 
-      expect(response.body.data).toHaveProperty('id');
-      expect(response.body.data.id).toBeDefined();
+      expect(response.body.data.registerUserDto).toHaveProperty('id');
+      expect(response.body.data.registerUserDto.id).toBeDefined();
       expect(response.body.message).toBe('user created!!');
     });
 
@@ -244,7 +244,7 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
       const tokens = await refreshTokenRepo
         .createQueryBuilder('refreshToken')
         .where('refreshToken.userId = :userId', {
-          userId: response.body.data.id,
+          userId: response.body.data.registerUserDto.id,
         })
         .getMany();
       expect(tokens).toHaveLength(1);

@@ -2,10 +2,11 @@ import { expressjwt, GetVerificationKey } from 'express-jwt';
 import { Request } from 'express';
 import jwksClient from 'jwks-rsa';
 import { AuthCookies } from '../types';
+import { configEnv } from '../config/config';
 
 export default expressjwt({
   secret: jwksClient.expressJwtSecret({
-    jwksUri: process.env.JWKS_URI!,
+    jwksUri: configEnv.jwksUri!,
     cache: true,
     rateLimit: true,
   }) as unknown as GetVerificationKey,
@@ -21,7 +22,6 @@ export default expressjwt({
     }
 
     const { accessToken } = req.cookies as AuthCookies;
-    console.log('accessToken =>', accessToken);
     if (accessToken) {
       return accessToken;
     }

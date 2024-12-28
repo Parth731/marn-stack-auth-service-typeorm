@@ -1,4 +1,5 @@
 import winston from 'winston';
+import { configEnv } from './config';
 
 /**
  * 
@@ -29,13 +30,13 @@ const logger = winston.createLogger({
       dirname: 'logs',
       filename: 'combined.log',
       level: 'info',
-      silent: process.env.NODE_ENV === 'test',
+      silent: configEnv.nodeEnv === 'test',
     }),
     new winston.transports.File({
       dirname: 'logs',
       filename: 'error.log',
       level: 'error',
-      silent: process.env.NODE_ENV === 'test',
+      silent: configEnv.nodeEnv === 'test',
     }),
     new winston.transports.Console({
       level: 'info',
@@ -43,7 +44,7 @@ const logger = winston.createLogger({
         winston.format.timestamp(),
         winston.format.json(),
       ),
-      silent: process.env.NODE_ENV === 'test',
+      silent: configEnv.nodeEnv === 'test',
     }),
   ],
 });

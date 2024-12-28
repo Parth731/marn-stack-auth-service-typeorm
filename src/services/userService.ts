@@ -1,9 +1,11 @@
 import createHttpError from 'http-errors';
 import { User } from '../database/entities/User';
-import { userCreateType, UserData } from '../types';
-import { Roles, saltRounds } from '../constants';
+// import { Roles, saltRounds } from '../constants';
 import bcrypt from 'bcrypt';
 import { AppDataSource } from '../database/data-source';
+import { saltRounds } from '../constants';
+import { userCreateType, UserData } from '../types/userType';
+import { Roles } from '../types';
 
 export const CreateUser = async ({
   userName,
@@ -81,7 +83,6 @@ export const findById = async (id: number): Promise<User | null> => {
     //   tenant: true,
     // },
   });
-
   return user;
   // throw createHttpError(404, 'User not found');
 };

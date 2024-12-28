@@ -7,6 +7,7 @@ import { RefreshToken } from '../database/entities/RefreshToken';
 import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
+import { configEnv } from '../config/config';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: Buffer;
@@ -23,17 +24,17 @@ export const generateAccessToken = (payload: JwtPayload): string => {
 
   const accessToken = sign(payload, privateKey, {
     algorithm: 'RS256',
-    expiresIn: String(process.env.ACCESS_TOKEN_EXPIRES_IN),
-    issuer: String(process.env.ACCESS_TOKEN_ISSUER),
+    expiresIn: String(configEnv.accessTokenExpiresIn),
+    issuer: String(configEnv.accessTokenIssuer),
   });
   return accessToken;
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
-  const refreshToken = sign(payload, process.env.REFRESH_TOKEN_SECRET!, {
+  const refreshToken = sign(payload, configEnv.refreshTokenSecret!, {
     algorithm: 'HS256',
-    expiresIn: String(process.env.REFRESH_TOKEN_EXPIRES_IN),
-    issuer: String(process.env.REFRESH_TOKEN_ISSUER),
+    expiresIn: String(configEnv.refreshTokenExpiresIn),
+    issuer: String(configEnv.refreshTokenIssuer),
     jwtid: payload.id.toString(), //embed the refresh token id
   });
   return refreshToken;

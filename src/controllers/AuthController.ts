@@ -1,5 +1,15 @@
 import { NextFunction, Response } from 'express';
-import { AuthRequest, loginUserRequest, registerUserRequest } from '../types';
+import {
+  loginResObjectType,
+  loginUserRequest,
+  logoutResObjectType,
+  logoutType,
+  refreshTokenResObjectType,
+  registerDataType,
+  registerResObjectType,
+  registerUserRequest,
+  selfResObjectType,
+} from '../types/userType';
 import {
   CreateUser,
   findByEmailAndUserName,
@@ -16,6 +26,15 @@ import {
 import createHttpError from 'http-errors';
 import { comparePassword } from '../services/CredentialService';
 import { setResponseCookies } from '../utils/auth.utils';
+import { ApiSuccessHandler } from '../utils/ApiSuccess';
+import {
+  loginUserDto,
+  logoutDto,
+  refreshTokenDto,
+  registerUserDto,
+  selfUserDto,
+} from '../Dto/UserDto';
+import { AuthRequest, Roles } from '../types';
 
 export const registerUser = async (
   req: registerUserRequest,
@@ -59,11 +78,21 @@ export const registerUser = async (
     setResponseCookies(res, accessToken, refreshToken);
 
     logger.info('token has been created');
-    res.status(201).json({
+
+    const resObj: registerDataType = {
+      ...user,
+      password: '',
+    };
+
+    const registerResObject: registerResObjectType = {
+      code: 201,
+      status: 'success',
       message: 'user created!!',
-      data: user,
+      data: registerUserDto(resObj),
       error: false,
-    });
+    };
+
+    ApiSuccessHandler(res, registerResObject);
   } catch (error) {
     next(error);
   }
@@ -117,12 +146,20 @@ export const loginUser = async (
 
     logger.info('user has been logged in', { id: existUserName?.id });
 
-    //return response
-    res.status(200).json({
-      message: 'user logged in!!',
-      data: existUserName,
+    const resObj = {
+      ...existUserName,
+      password: '',
+    };
+
+    const loginResObject: loginResObjectType = {
+      code: 200,
+      status: 'success',
+      message: 'user logged in successfully!!!',
+      data: loginUserDto(resObj),
       error: false,
-    });
+    };
+
+    ApiSuccessHandler(res, loginResObject);
   } catch (error) {
     next(error);
   }
@@ -131,7 +168,17 @@ export const loginUser = async (
 export const self = async (req: AuthRequest, res: Response): Promise<void> => {
   //req.auth.id
   const user = await findById(Number(req.auth.sub));
-  res.status(200).json({ ...user, password: undefined });
+
+  // res.status(200).json({ ...user, password: undefined });
+  const selfResObject: selfResObjectType = {
+    code: 200,
+    status: 'success',
+    message: 'fetch user data successfully',
+    data: selfUserDto(user!),
+    error: false,
+  };
+
+  ApiSuccessHandler(res, selfResObject);
 };
 
 export const refresh = async (
@@ -155,7 +202,7 @@ export const refresh = async (
 
     //generate token
     const payload: JwtPayload = {
-      sub: req.auth.id,
+      sub: req.auth.sub,
       role: req.auth.role,
     };
     const accessToken = generateAccessToken(payload);
@@ -187,11 +234,21 @@ export const refresh = async (
 
     setResponseCookies(res, accessToken, refreshToken);
 
-    res.status(200).json({
+    // res.status(200).json({
+    //   message: 'refresh token and access token generated successfully',
+    //   data: { id: existUserName.id, userName: existUserName.userName },
+    //   error: false,
+    // });
+
+    const refreshTokenResObject: refreshTokenResObjectType = {
+      code: 200,
+      status: 'success',
       message: 'refresh token and access token generated successfully',
-      data: { id: existUserName.id },
+      data: refreshTokenDto(existUserName),
       error: false,
-    });
+    };
+
+    ApiSuccessHandler(res, refreshTokenResObject);
   } catch (error) {
     next(error);
   }
@@ -209,11 +266,26 @@ export const logout = async (
     logger.info('User has been logout', { id: req.auth.sub });
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
-    res.status(200).json({
-      message: 'loggout successfully',
-      data: null,
+    // res.status(200).json({
+    //   message: 'loggout successfully',
+    //   data: null,
+    //   error: false,
+    // });
+
+    const resObj: logoutType = {
+      id: Number(req.auth.id),
+      role: req.auth.role as Roles,
+    };
+
+    const logoutResObject: logoutResObjectType = {
+      code: 200,
+      status: 'success',
+      message: 'loggout successfully!!!',
+      data: logoutDto(resObj),
       error: false,
-    });
+    };
+
+    ApiSuccessHandler(res, logoutResObject);
   } catch (error) {
     next(error);
   }

@@ -4,14 +4,14 @@ import { AuthCookies, IRefreshTokenPayload } from '../types';
 import { RefreshToken } from '../database/entities/RefreshToken';
 import logger from '../config/logger';
 import { AppDataSource } from '../database/data-source';
+import { configEnv } from '../config/config';
 
 export default expressjwt({
-  secret: process.env.REFRESH_TOKEN_SECRET!,
+  secret: configEnv.refreshTokenSecret!,
   algorithms: ['HS256'],
   // get refresh token
   getToken(req: Request) {
     const { refreshToken } = req.cookies as AuthCookies;
-
     return refreshToken;
   },
   // validate to refresh token
@@ -31,19 +31,15 @@ export default expressjwt({
         },
         signature: '-Lpnst36CS5xQ_Ke3y2OS17CgiHfrlHmAIXytDtUsrE'
         }
-        console.log('isRevoked', token);
         */
     try {
       const refreshTokenRepo = AppDataSource.getRepository(RefreshToken);
       const refreshToken = await refreshTokenRepo.findOne({
         where: {
           id: Number((token?.payload as IRefreshTokenPayload).id),
-          user: {
-            id: Number(token?.payload?.sub),
-          },
+          user: { id: Number(token?.payload.sub) },
         },
       });
-      console.log('isRevoked', refreshToken);
       return refreshToken === null;
     } catch (error) {
       logger.error(`Error while getting the refresh token: ${error}`, {

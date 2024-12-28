@@ -1,19 +1,20 @@
+import 'reflect-metadata';
 import { config } from 'dotenv';
 import path from 'path';
+import { DataSource } from 'typeorm';
+import { configEnv } from '../config/config';
 
 config({
-  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV || 'dev'}`),
+  path: path.join(__dirname, `../../.env.${configEnv.baseUrl || 'dev'}`),
 });
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // PostgreSQL setup
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  host: configEnv.dbHost,
+  port: Number(configEnv.dbPort),
+  username: configEnv.dbUsername,
+  password: configEnv.dbPassword,
+  database: configEnv.dbDatabase,
   synchronize: true, //don't use this in production, always keep false
   logging: false,
   // entities: [User, RefreshToken],

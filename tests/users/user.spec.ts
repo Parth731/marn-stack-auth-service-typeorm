@@ -1,13 +1,14 @@
 import createJWKSMock from 'mock-jwks';
 // import jwt from 'jsonwebtoken';
 import { DataSource } from 'typeorm';
-import { Roles } from '../../src/constants/index';
 import request from 'supertest';
 import app from '../../src/app';
 import { User } from '../../src/database/entities/User';
 import { AppDataSource } from '../../src/database/data-source';
+import { configEnv } from '../../src/config/config';
+import { Roles } from '../../src/types';
 
-process.env.REFRESH_TOKEN_SECRET = 'test-secret';
+configEnv.baseUrl = 'test-secret';
 describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
   let connection: DataSource;
   let jwks: ReturnType<typeof createJWKSMock>;
@@ -34,9 +35,10 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
   describe('Given all fields', () => {
     it('should return the 200 status code', async () => {
       const accessToken = jwks.token({
-        sub: '1',
+        sub: '5',
         role: Roles.CUSTOMER,
       });
+
       const response = await request(app)
         .get('/pizza-app/auth-service/api/v1/auth/self')
         .set('Cookie', [`accessToken=${accessToken};`])
@@ -59,6 +61,7 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
         ...userData,
         role: Roles.CUSTOMER,
       });
+
       // Generate token
       const accessToken = jwks.token({
         sub: String(data.id),
@@ -69,10 +72,13 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
         .get('/pizza-app/auth-service/api/v1/auth/self')
         .set('Cookie', [`accessToken=${accessToken};`])
         .send();
+
       // Assert
       // Check if user id matches with registered user
       expect(response.statusCode).toBe(200);
-      expect((response.body as Record<string, string>).id).toBe(data.id);
+      expect((response.body.data.selfDto as Record<string, string>).id).toBe(
+        data.id,
+      );
     });
 
     it('should not return the password field', async () => {
