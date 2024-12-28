@@ -7,6 +7,7 @@ export interface UserData {
   lastName: string;
   email: string;
   password: string;
+  tenantId?: number;
 }
 
 export interface userCreateType extends UserData {

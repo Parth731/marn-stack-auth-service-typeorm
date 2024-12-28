@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
-import authRouter from './routes/auth';
+import authRouter from './routes/authRouter';
+import tenantRouter from './routes/tenantRouter';
 import path from 'path';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { configEnv } from './config/config';
@@ -23,6 +24,7 @@ app.get(`${configEnv.baseUrl}/`, async (req: Request, res: Response) => {
 });
 
 app.use(`${configEnv.baseUrl}/auth`, authRouter);
+app.use(`${configEnv.baseUrl}/tenants`, tenantRouter);
 
 // global error handler
 app.use(globalErrorHandler);

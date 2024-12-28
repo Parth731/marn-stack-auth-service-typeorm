@@ -31,5 +31,5 @@ export class User {
 
   // multiple tanants and one user
   @ManyToOne(() => Tenant)
-  tanant!: Tenant;
+  tenant!: Tenant;
 }

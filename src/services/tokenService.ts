@@ -2,12 +2,12 @@ import createHttpError from 'http-errors';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import path from 'path';
 import fs from 'fs';
-import { User } from '../database/entities/User';
 import { RefreshToken } from '../database/entities/RefreshToken';
 import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
 import { configEnv } from '../config/config';
+import { userCreateType } from '../types/userType';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: Buffer;
@@ -41,7 +41,7 @@ export const generateRefreshToken = (payload: JwtPayload): string => {
 };
 
 export const persistRefreshToken = async (
-  user: User,
+  user: userCreateType,
 ): Promise<RefreshToken> => {
   const MS_IN_YEAR = isLeapYear(new Date().getFullYear());
   const refreshTokenRepository: Repository<RefreshToken> =

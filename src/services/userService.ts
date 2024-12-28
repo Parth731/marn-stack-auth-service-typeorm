@@ -13,6 +13,7 @@ export const CreateUser = async ({
   lastName,
   email,
   password,
+  tenantId,
 }: UserData): Promise<userCreateType> => {
   const userRepository = AppDataSource.getRepository(User);
 
@@ -43,6 +44,7 @@ export const CreateUser = async ({
       email,
       password: hashPassword,
       role: Roles.CUSTOMER,
+      tenant: tenantId ? { id: tenantId } : undefined,
     });
     return user;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
