@@ -14,8 +14,8 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
   let jwks: ReturnType<typeof createJWKSMock>;
 
   beforeAll(async () => {
-    jwks = createJWKSMock('http://localhost:5501');
     connection = await AppDataSource.initialize();
+    jwks = createJWKSMock('http://localhost:5501');
   });
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await connection.close();
   });
 
   describe('Given all fields', () => {

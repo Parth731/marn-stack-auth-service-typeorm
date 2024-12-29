@@ -6,6 +6,7 @@ import {
   registerResObjectType,
   selfResObjectType,
 } from '../types/userType';
+import { tenantCreateResObjectType } from '../types/tenantsType';
 
 export const ApiSuccessHandler = (
   res: Response,
@@ -14,7 +15,8 @@ export const ApiSuccessHandler = (
     | loginResObjectType
     | selfResObjectType
     | refreshTokenResObjectType
-    | logoutResObjectType,
+    | logoutResObjectType
+    | tenantCreateResObjectType,
 ): void => {
   res.status(responseObject.code).json({
     status: responseObject.code,
