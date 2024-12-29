@@ -9,6 +9,7 @@ import { Tenant } from '../../src/database/entities/Tenant';
 describe('POST /tenants', () => {
   let connection: DataSource;
   let jwks: ReturnType<typeof createJWKSMock>;
+  let adminToken: string;
   const baseUrl = '/pizza-app/auth-service/api/v1/tenants';
 
   beforeAll(async () => {
@@ -21,10 +22,10 @@ describe('POST /tenants', () => {
     await connection.synchronize();
     jwks.start();
 
-    // adminToken = jwks.token({
-    //   sub: '1',
-    //   role: Roles.ADMIN,
-    // });
+    adminToken = jwks.token({
+      sub: '1',
+      role: Roles.ADMIN,
+    });
   });
 
   afterAll(async () => {
@@ -43,7 +44,7 @@ describe('POST /tenants', () => {
       };
       const response = await request(app)
         .post(baseUrl)
-        // .set('Cookie', [`accessToken=${adminToken}`])
+        .set('Cookie', [`accessToken=${adminToken}`])
         .send(tenantData);
 
       expect(response.statusCode).toBe(201);
@@ -57,7 +58,7 @@ describe('POST /tenants', () => {
 
       await request(app)
         .post(baseUrl)
-        // .set('Cookie', [`accessToken=${adminToken}`])
+        .set('Cookie', [`accessToken=${adminToken}`])
         .send(tenantData);
 
       const tenantRepository = connection.getRepository(Tenant);
@@ -65,6 +66,21 @@ describe('POST /tenants', () => {
       expect(tenants).toHaveLength(1);
       expect(tenants[0].name).toBe(tenantData.name);
       expect(tenants[0].address).toBe(tenantData.address);
+    });
+
+    it('should return 401 if user is not autheticated', async () => {
+      const tenantData = {
+        name: 'Tenant name',
+        address: 'Tenant address',
+      };
+
+      const response = await request(app).post(baseUrl).send(tenantData);
+      expect(response.statusCode).toBe(401);
+
+      const tenantRepository = connection.getRepository(Tenant);
+      const tenants = await tenantRepository.find();
+
+      expect(tenants).toHaveLength(0);
     });
   });
 });
