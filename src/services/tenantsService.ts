@@ -1,12 +1,16 @@
 import createHttpError from 'http-errors';
 import { AppDataSource } from '../database/data-source';
 import { Tenant } from '../database/entities/Tenant';
-import { ICreateTenants, tenantCreateDataType } from '../types/tenantsType';
+import {
+  ICreateTenants,
+  IGetAllTenantsDto,
+  ITenantCreateDto,
+} from '../types/tenantsType';
 import logger from '../config/logger';
 
 export const TenantCreateService = async (
   tenantData: ICreateTenants,
-): Promise<tenantCreateDataType | undefined> => {
+): Promise<ITenantCreateDto | undefined> => {
   const tenantRepository = AppDataSource.getRepository(Tenant);
   const { name, address } = tenantData;
 
@@ -32,6 +36,94 @@ export const TenantCreateService = async (
       const customError = createHttpError(
         500,
         'failed to store the tenant data in the database',
+      );
+      throw customError;
+    }
+  }
+};
+
+export const TenantGetAllService = async (): Promise<
+  IGetAllTenantsDto[] | undefined
+> => {
+  const tenantRepository = AppDataSource.getRepository(Tenant);
+
+  try {
+    const tenants = await tenantRepository.find();
+    if (!tenants) {
+      const customError = createHttpError(
+        500,
+        'failed to fetch the tenants data from the database',
+      );
+      throw customError;
+    }
+    return tenants;
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message);
+    } else {
+      const customError = createHttpError(
+        500,
+        'failed to fetch all tenants data from the database',
+      );
+      throw customError;
+    }
+  }
+};
+
+export const TenantGetByIdService = async (
+  tenantId: number,
+): Promise<IGetAllTenantsDto | undefined> => {
+  try {
+    const tenantRepository = AppDataSource.getRepository(Tenant);
+    const tenant = await tenantRepository.findOne({ where: { id: tenantId } });
+    if (!tenant) {
+      const customError = createHttpError(404, 'Tenant not found');
+      throw customError;
+    }
+    return tenant;
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message);
+    } else {
+      const customError = createHttpError(
+        500,
+        'failed to fetch single tenant data from the database',
+      );
+      throw customError;
+    }
+  }
+};
+
+export const TenantDeleteService = async (tenantId: number): Promise<void> => {
+  try {
+    const tenantRepository = AppDataSource.getRepository(Tenant);
+    await tenantRepository.delete(tenantId);
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message);
+    } else {
+      const customError = createHttpError(
+        500,
+        'failed to delete tenants data from the database',
+      );
+      throw customError;
+    }
+  }
+};
+
+export const TenantUpdateService = async (
+  id: number,
+  tenantData: ICreateTenants,
+): Promise<void> => {
+  try {
+    await AppDataSource.getRepository(Tenant).update(id, tenantData);
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message);
+    } else {
+      const customError = createHttpError(
+        500,
+        'failed to update tenant data in the database',
       );
       throw customError;
     }
