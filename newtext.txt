@@ -290,3 +290,8 @@ migration command
 - npm run migration:generate -- src/database/migrations/migration1 -d src/database/data-source.ts
 
 - npm run migration:run -- -d src/database/data-source.ts
+
+---
+
+- how to show test coverage -> goto -> (coverage/lcov-report/inde.html) 
+-> right click -> open to live server

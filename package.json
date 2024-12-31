@@ -4,8 +4,8 @@
   "description": "auth-service create using typescript nodejs",
   "main": "src/server.ts",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch --coverage",
+    "test:watch": "jest --watch --runInBand",
+    "test": "jest --no-cache --coverage --all --runInBand",
     "build": "tsc",
     "start": "tsc && ts-node dist/server.js",
     "dev": "cross-env NODE_ENV=dev nodemon --legacy-watch src/server.ts",
