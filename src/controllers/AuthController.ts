@@ -9,11 +9,11 @@ import {
   registerResObjectType,
   registerUserRequest,
   selfResObjectType,
-} from '../types/userType';
+} from '../types/auth';
 import {
-  CreateUser,
-  findByEmailAndUserName,
-  findById,
+  CreateUserService,
+  findByEmailWithPasswordService,
+  findByIdService,
 } from '../services/userService';
 import logger from '../config/logger';
 import { JwtPayload } from 'jsonwebtoken';
@@ -35,12 +35,20 @@ import {
   selfUserDto,
 } from '../Dto/UserDto';
 import { AuthRequest, Roles } from '../types';
+import { validationResult } from 'express-validator';
 
 export const registerUser = async (
   req: registerUserRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // Validation
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
   const { firstName, lastName, email, password, userName } = req.body;
   logger.debug('New request to register a user', {
     userName,
@@ -50,19 +58,25 @@ export const registerUser = async (
     password: '******',
   });
   try {
-    const user = await CreateUser({
+    const user = await CreateUserService({
       userName,
       firstName,
       lastName,
       email,
       password,
+      role: Roles.CUSTOMER,
     });
 
     logger.info('User has been registered', { id: user.id });
 
     const payload: JwtPayload = {
-      sub: String(user.id),
+      sub: String(user?.id),
       role: user.role,
+      userName: user.userName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      tenant: user.tenant ? String(user.tenant.id) : '',
     };
 
     const accessToken = generateAccessToken(payload);
@@ -81,6 +95,7 @@ export const registerUser = async (
 
     const resObj: registerDataType = {
       ...user,
+      role: user.role as Roles,
       password: '',
     };
 
@@ -103,6 +118,11 @@ export const loginUser = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
   const { email, password, userName } = req.body;
   logger.debug('New request to login a user', {
     userName,
@@ -113,12 +133,12 @@ export const loginUser = async (
   try {
     //check if Username is exists
     //check if email is exists
-    const existUserName = await findByEmailAndUserName(email, userName);
+    const existUser = await findByEmailWithPasswordService(email, userName);
 
     //compare password
     const isPasswordMatch = await comparePassword(
       password,
-      existUserName?.password,
+      existUser?.password,
     );
     if (!isPasswordMatch)
       throw createHttpError(
@@ -128,14 +148,19 @@ export const loginUser = async (
 
     //generate token
     const payload: JwtPayload = {
-      sub: String(existUserName?.id),
-      role: existUserName?.role,
+      sub: String(existUser?.id),
+      role: existUser?.role,
+      userName: existUser.userName,
+      firstName: existUser.firstName,
+      lastName: existUser.lastName,
+      email: existUser.email,
+      tenant: existUser.tenant ? String(existUser.tenant.id) : '',
     };
 
     const accessToken = generateAccessToken(payload);
 
     //persist refresh token
-    const newRefreshToken = await persistRefreshToken(existUserName);
+    const newRefreshToken = await persistRefreshToken(existUser);
 
     const refreshToken = generateRefreshToken({
       ...payload,
@@ -144,10 +169,10 @@ export const loginUser = async (
 
     setResponseCookies(res, accessToken, refreshToken);
 
-    logger.info('user has been logged in', { id: existUserName?.id });
+    logger.info('user has been logged in', { id: existUser?.id });
 
     const resObj = {
-      ...existUserName,
+      ...existUser,
       password: '',
     };
 
@@ -167,8 +192,7 @@ export const loginUser = async (
 
 export const self = async (req: AuthRequest, res: Response): Promise<void> => {
   //req.auth.id
-  const user = await findById(Number(req.auth.sub));
-
+  const user = await findByIdService(Number(req.auth.sub));
   // res.status(200).json({ ...user, password: undefined });
   const selfResObject: selfResObjectType = {
     code: 200,
@@ -207,7 +231,7 @@ export const refresh = async (
     };
     const accessToken = generateAccessToken(payload);
 
-    const existUserName = await findById(Number(req.auth.sub));
+    const existUserName = await findByIdService(Number(req.auth.sub));
     if (!existUserName) {
       const error = createHttpError(
         '400',

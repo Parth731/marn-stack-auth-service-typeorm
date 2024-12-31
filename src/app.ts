@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
 import authRouter from './routes/authRouter';
 import tenantRouter from './routes/tenantRouter';
+import userRouter from './routes/userRouter';
 import path from 'path';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { configEnv } from './config/config';
@@ -25,6 +26,7 @@ app.get(`${configEnv.baseUrl}/`, async (req: Request, res: Response) => {
 
 app.use(`${configEnv.baseUrl}/auth`, authRouter);
 app.use(`${configEnv.baseUrl}/tenants`, tenantRouter);
+app.use(`${configEnv.baseUrl}/users`, userRouter);
 
 // global error handler
 app.use(globalErrorHandler);

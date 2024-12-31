@@ -156,7 +156,7 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
       //Assert
       const userRepository = connection.getRepository(User);
-      const users = await userRepository.find(); //fetch the table data
+      const users = await userRepository.find({ select: ['password'] }); //fetch the table data
       expect(users[0].password).not.toBe(userData.password);
 
       // $2b$10$P7XmW85oYjqCXTbALOZsM.bzXdo1qbuQIBldVJrvr9XBTALOYGDCC

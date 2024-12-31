@@ -5,6 +5,7 @@ import {
   ICreateTenants,
   IGetAllTenantsDto,
   ITenantCreateDto,
+  TenantQueryParams,
 } from '../types/tenantsType';
 import logger from '../config/logger';
 
@@ -42,21 +43,45 @@ export const TenantCreateService = async (
   }
 };
 
-export const TenantGetAllService = async (): Promise<
-  IGetAllTenantsDto[] | undefined
+export const TenantGetAllService = async (
+  validatedQuery: TenantQueryParams,
+): Promise<
+  | {
+      tenants: IGetAllTenantsDto[];
+      count: number;
+    }
+  | undefined
 > => {
   const tenantRepository = AppDataSource.getRepository(Tenant);
 
   try {
-    const tenants = await tenantRepository.find();
-    if (!tenants) {
-      const customError = createHttpError(
-        500,
-        'failed to fetch the tenants data from the database',
-      );
-      throw customError;
+    // const tenants = await tenantRepository.find();
+    // if (!tenants) {
+    //   const customError = createHttpError(
+    //     500,
+    //     'failed to fetch the tenants data from the database',
+    //   );
+    //   throw customError;
+    // }
+    // return tenants;
+
+    const queryBuilder = tenantRepository.createQueryBuilder('tenant');
+
+    if (validatedQuery.q) {
+      const searchTerm = `%${validatedQuery.q}%`;
+      queryBuilder.where("CONCAT(tenant.name, ' ', tenant.address) ILike :q", {
+        q: searchTerm,
+      });
     }
-    return tenants;
+
+    const result = await queryBuilder
+      .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
+      .take(validatedQuery.perPage)
+      .orderBy('tenant.id', 'DESC')
+      .getManyAndCount();
+
+    const [tenants, count] = result;
+    return { tenants, count };
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message);

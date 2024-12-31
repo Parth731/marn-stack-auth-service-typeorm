@@ -18,8 +18,8 @@ export const AppDataSource = new DataSource({
   synchronize: false, //don't use this in production, always keep false
   logging: false,
   // entities: [User, RefreshToken],
-  entities: ['src/database/entities/*.ts'], // Add all your entities here
-  migrations: ['src/database/migrations/*.ts'],
+  entities: ['src/database/entities/*.{ts,js}'], // Add all your entities here
+  migrations: ['src/database/migrations/*.{ts,js}'],
   subscribers: [],
 });
 

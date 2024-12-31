@@ -1,11 +1,15 @@
 import { Response } from 'express';
 import {
+  deleteUserResObject,
+  getAllUsersResObject,
+  getUserByIdResObject,
   loginResObjectType,
   logoutResObjectType,
   refreshTokenResObjectType,
   registerResObjectType,
   selfResObjectType,
-} from '../types/userType';
+  updateUserResObjectType,
+} from '../types/auth';
 import {
   ITenantDeleteResObject,
   ITenantGetAllResObject,
@@ -26,7 +30,11 @@ export const ApiSuccessHandler = (
     | ITenantGetAllResObject
     | ITenantGetByIdResObject
     | ITenantDeleteResObject
-    | ITenantUpdateResObject,
+    | ITenantUpdateResObject
+    | updateUserResObjectType
+    | getAllUsersResObject
+    | deleteUserResObject
+    | getUserByIdResObject,
 ): void => {
   res.status(responseObject.code).json({
     status: responseObject.code,

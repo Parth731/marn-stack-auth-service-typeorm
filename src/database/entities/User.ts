@@ -19,7 +19,7 @@ export class User {
   @Column({ unique: true })
   email!: string;
 
-  @Column()
+  @Column({ select: false })
   password!: string;
 
   @Column({
@@ -31,5 +31,5 @@ export class User {
 
   // multiple tanants and one user
   @ManyToOne(() => Tenant)
-  tenant!: Tenant;
+  tenant!: Tenant | null;
 }

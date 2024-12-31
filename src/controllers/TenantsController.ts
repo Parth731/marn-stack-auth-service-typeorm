@@ -6,6 +6,7 @@ import {
   tenantRequest,
   ITenantDeleteResObject,
   ITenantUpdateResObject,
+  TenantQueryParams,
 } from '../types/tenantsType';
 import {
   TenantCreateService,
@@ -24,16 +25,24 @@ import {
 import { ApiSuccessHandler } from '../utils/ApiSuccess';
 import logger from '../config/logger';
 import createHttpError from 'http-errors';
+import { matchedData, validationResult } from 'express-validator';
 
 export const tenantCreate = async (
   req: tenantRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // Validation
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
   const { name, address } = req.body;
-
+  logger.debug('Request for creating a tenant', req.body);
   try {
     const tenant = await TenantCreateService({ name, address });
+    logger.info('Tenant has been created', { id: tenant?.id });
     const createTenantResObject: ITenantCreateResObject = {
       code: 201,
       status: 'success',
@@ -53,21 +62,29 @@ export const getAllTenants = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  const validatedQuery = matchedData(req, { onlyValidData: true });
   try {
-    const allTenants = await TenantGetAllService();
-    if (!allTenants) {
-      return next(new Error('Failed to fetch tenants'));
+    const result = await TenantGetAllService(
+      validatedQuery as TenantQueryParams,
+    );
+    if (!result) {
+      throw new Error('Failed to fetch tenants');
     }
+    const { tenants, count } = result;
+
     logger.info('All tenant have been fetched');
     const tenantGetAllResObject: ITenantGetAllResObject = {
       code: 200,
       status: 'success',
       message: 'All tenants fetched!!',
-      data: tenantGetAllDto(allTenants!),
+      data: tenantGetAllDto(tenants!),
       error: false,
+      currentPage: validatedQuery.currentPage as number,
+      perPage: validatedQuery.perPage as number,
+      total: count,
     };
 
-    ApiSuccessHandler(res, tenantGetAllResObject);
+    res.status(tenantGetAllResObject.code).json(tenantGetAllResObject);
   } catch (error) {
     next(error);
   }
@@ -113,6 +130,12 @@ export const updateTenant = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
+
   try {
     const tenantId = req.params.id;
     const { name, address } = req.body;

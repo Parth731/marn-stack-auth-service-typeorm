@@ -1,5 +1,6 @@
 import { Roles } from './index';
 import { Request } from 'express';
+import { IGetAllTenantsDto } from './tenantsType';
 /** register */
 export interface UserData {
   userName: string;
@@ -8,11 +9,11 @@ export interface UserData {
   email: string;
   password: string;
   tenantId?: number;
+  role: Roles;
 }
 
 export interface userCreateType extends UserData {
   id: number;
-  role: Roles;
 }
 
 export interface registerUserRequest extends Request {
@@ -27,6 +28,11 @@ export interface registerDataType {
   lastName: string;
   role: Roles;
   password: string;
+  tenant: {
+    id: number;
+    name: string;
+    address: string;
+  };
 }
 
 export interface registerUserDtoType {
@@ -35,6 +41,7 @@ export interface registerUserDtoType {
   email: string;
   fullName: string;
   role: Roles;
+  tenantId?: number;
 }
 
 export interface registerResObjectType {
@@ -89,6 +96,7 @@ export interface selfDataType {
   lastName: string;
   role: Roles;
   password: string;
+  tenant: IGetAllTenantsDto | null;
 }
 
 export interface selfDtoType {
@@ -97,6 +105,7 @@ export interface selfDtoType {
   userName: string;
   email: string;
   role: string;
+  tenant: IGetAllTenantsDto | null;
 }
 
 export interface selfResObjectType {
@@ -154,6 +163,108 @@ export interface logoutResObjectType {
   message: string;
   data: {
     logoutDto: logoutDtoType;
+  };
+  error: boolean;
+}
+
+//create user
+export interface createUserRequest extends Request {
+  body: UserData;
+}
+
+// update user
+export interface LimitedUserData {
+  userName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: Roles;
+  tenantId: number;
+}
+
+export interface updateUserRequest extends Request {
+  body: LimitedUserData;
+}
+
+export interface updateUserType {
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: Roles;
+  tenantId: number;
+}
+
+export interface updateUserDtoType {
+  id: number;
+  userName: string;
+  fullName: string;
+  email: string;
+  role: Roles;
+  tenantId: number;
+}
+
+export interface updateUserResObjectType {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    updateUserDto: updateUserDtoType;
+  };
+  error: boolean;
+}
+
+// get all users
+
+export interface UserQueryParams {
+  perPage: number;
+  currentPage: number;
+  q: string;
+  role: string;
+}
+
+export interface getAllUsersDtoType {
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: Roles;
+  tenant: IGetAllTenantsDto | null;
+}
+
+export interface getAllUsersResObject {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    getAllUsersDto: getAllUsersDtoType[];
+  };
+  error: boolean;
+  total: number;
+  currentPage: number;
+  perPage: number;
+}
+
+// get user by id
+export interface getUserByIdResObject {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    getUserByIdDto: getAllUsersDtoType;
+  };
+  error: boolean;
+}
+
+// delete user
+export interface deleteUserResObject {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    deleteuserDto: getAllUsersDtoType;
   };
   error: boolean;
 }

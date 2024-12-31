@@ -7,7 +7,7 @@ import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
 import { configEnv } from '../config/config';
-import { userCreateType } from '../types/userType';
+import { userCreateType } from '../types/auth';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: Buffer;

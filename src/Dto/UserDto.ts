@@ -1,4 +1,5 @@
 import {
+  getAllUsersDtoType,
   loginDtoType,
   loginUserType,
   logoutDtoType,
@@ -9,7 +10,9 @@ import {
   registerUserDtoType,
   selfDataType,
   selfDtoType,
-} from '../types/userType';
+  updateUserDtoType,
+  updateUserType,
+} from '../types/auth';
 
 export const registerUserDto = (
   user: registerDataType,
@@ -47,6 +50,7 @@ export const selfUserDto = (user: selfDataType): { selfDto: selfDtoType } => {
       userName: user?.userName,
       email: user?.email,
       role: user?.role,
+      tenant: user?.tenant,
     },
   };
 };
@@ -68,5 +72,46 @@ export const logoutDto = (user: logoutType): { logoutDto: logoutDtoType } => {
       id: Number(user.id),
       role: user.role,
     },
+  };
+};
+
+export const updateUserDto = (
+  user: updateUserType,
+): {
+  updateUserDto: updateUserDtoType;
+} => {
+  return {
+    updateUserDto: {
+      id: user.id,
+      userName: user.userName,
+      fullName: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      role: user.role,
+      tenantId: user.tenantId,
+    },
+  };
+};
+
+export const getAllUsersDto = (
+  users: getAllUsersDtoType[],
+): { getAllUsersDto: getAllUsersDtoType[] } => {
+  return {
+    getAllUsersDto: users,
+  };
+};
+
+export const getUserByIdDto = (
+  user: getAllUsersDtoType,
+): { getUserByIdDto: getAllUsersDtoType } => {
+  return {
+    getUserByIdDto: user,
+  };
+};
+
+export const deleteuserDto = (
+  user: getAllUsersDtoType,
+): { deleteuserDto: getAllUsersDtoType } => {
+  return {
+    deleteuserDto: user,
   };
 };

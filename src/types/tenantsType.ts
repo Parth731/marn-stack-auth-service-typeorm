@@ -1,5 +1,6 @@
 import { Request } from 'express';
 
+//create tenants
 export interface ICreateTenants {
   name: string;
   address: string;
@@ -35,6 +36,12 @@ export interface ITenantCreateResObject {
   error: boolean;
 }
 
+//get all tenants
+export interface TenantQueryParams {
+  q: string;
+  perPage: number;
+  currentPage: number;
+}
 export interface IGetAllTenantsDto {
   id: number;
   name: string;
@@ -51,8 +58,12 @@ export interface ITenantGetAllResObject {
     tenantGetAllDto: IGetAllTenantsDto[];
   };
   error: boolean;
+  currentPage: number;
+  perPage: number;
+  total: number;
 }
 
+//get tenant by id
 export interface ITenantGetByIdResObject {
   code: number;
   status: string;
@@ -62,6 +73,8 @@ export interface ITenantGetByIdResObject {
   };
   error: boolean;
 }
+
+//delete tenant
 
 export interface IDeleteTenantDto {
   id: number;
@@ -78,6 +91,7 @@ export interface ITenantDeleteResObject {
   error: boolean;
 }
 
+//update tenant
 export interface IUpdateTenantDto {
   id: number;
   name: string;
