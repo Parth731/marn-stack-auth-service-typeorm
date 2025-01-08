@@ -26,6 +26,7 @@ interface Config {
   refreshTokenExpiresIn: string;
   accessTokenExpiresIn: string;
   jwksUri: string;
+  privatekey: string;
 }
 
 export const configEnv: Config = {
@@ -52,4 +53,5 @@ export const configEnv: Config = {
   accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN || '1h',
   jwksUri:
     process.env.JWKS_URI || 'http://localhost:5501/.well-known/jwks.json',
+  privatekey: process.env.PRIVATE_KEY || '',
 };

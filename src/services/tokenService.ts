@@ -1,7 +1,5 @@
 import createHttpError from 'http-errors';
 import { JwtPayload, sign } from 'jsonwebtoken';
-import path from 'path';
-import fs from 'fs';
 import { RefreshToken } from '../database/entities/RefreshToken';
 import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
@@ -10,11 +8,15 @@ import { configEnv } from '../config/config';
 import { userCreateType } from '../types/auth';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
-  let privateKey: Buffer;
+  let privateKey: string;
+
+  if (!configEnv.privatekey) {
+    const error = createHttpError(500, 'Private key not found');
+    throw error;
+  }
+
   try {
-    privateKey = fs.readFileSync(
-      path.resolve(__dirname, '../../certs/private.pem'),
-    );
+    privateKey = configEnv.privatekey;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
