@@ -19,11 +19,6 @@ jobs:
     # if: github.event_name == 'pull_request'
     env:
       DB_DATABASE_URL: 'postgresql://postgres.athuqkqugsimuolwjpaf:mj2p$iMNPe!nhWz@aws-0-ap-south-1.pooler.supabase.com:5432/postgres'
-      DB_HOST: ${{ secrets.TEST_DB_HOST }}
-      DB_PORT: ${{ secrets.TEST_DB_PORT }}
-      DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-      DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
       REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
       JWKS_URI: ${{ secrets.JWKS_URI }}
       PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
