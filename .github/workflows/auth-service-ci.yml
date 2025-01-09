@@ -33,7 +33,7 @@ jobs:
       ACCESS_TOKEN_EXPIRES_IN: ${{ secrets.ACCESS_TOKEN_EXPIRES_IN }}
       BASE_URL: '/pizza-app/auth-service/api/v1'
       PORT: 5501
-      NODE_ENV: dev
+      NODE_ENV: 'dev'
     steps:
       - name: action checkout
         uses: actions/checkout@v4
