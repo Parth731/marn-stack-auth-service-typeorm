@@ -30,10 +30,18 @@ jobs:
           # DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
           # DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
           # DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
-          DB_DATABASE_URL: ${{ secrets.DB_DATABASE_URL }}
+          DB_DATABASE_URL: ${{ secrets.TEST_DB_DATABASE_URL }}
           REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
           JWKS_URI: ${{ secrets.JWKS_URI }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REFRESH_TOKEN_ISSUER: ${{ secrets.REFRESH_TOKEN_ISSUER }}
+          ACCESS_TOKEN_ISSUER: ${{ secrets.ACCESS_TOKEN_ISSUER }}
+          REFRESH_TOKEN_EXPIRES_IN: ${{ secrets.REFRESH_TOKEN_EXPIRES_IN }}
+          ACCESS_TOKEN_EXPIRES_IN: ${{ secrets.ACCESS_TOKEN_EXPIRES_IN }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          PORT: ${{ secrets.PORT }}
       - name: Build-ts
         run: npm run build
       - name: SonarCloud Scan
