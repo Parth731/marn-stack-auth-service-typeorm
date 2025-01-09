@@ -27,6 +27,8 @@ interface Config {
   accessTokenExpiresIn: string;
   jwksUri: string;
   privatekey: string;
+
+  databaseUrl: string;
 }
 
 export const configEnv: Config = {
@@ -54,4 +56,5 @@ export const configEnv: Config = {
   jwksUri:
     process.env.JWKS_URI || 'http://localhost:5501/.well-known/jwks.json',
   privatekey: process.env.PRIVATE_KEY || '',
+  databaseUrl: process.env.DB_DATABASE_URL || '',
 };
