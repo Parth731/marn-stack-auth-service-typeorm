@@ -3,10 +3,12 @@ name: auth servces CI
 on:
   pull_request:
     branches:
+      - master
       - develop
       - production
   push:
     branches:
+      - master
       - develop
       - production
 
