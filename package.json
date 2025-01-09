@@ -19,7 +19,7 @@
     "format:fix": "prettier . --write",
     "lint": "eslint",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "author": "parth dangroshiya",
   "license": "ISC",
@@ -48,8 +48,9 @@
     "eslint-plugin-prettier": "^5.2.1",
     "express-validator": "^7.2.0",
     "globals": "^15.14.0",
+    "husky": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "lint-staged": "^15.2.11",
+    "lint-staged": "^15.3.0",
     "mock-jwks": "^1.0.10",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
