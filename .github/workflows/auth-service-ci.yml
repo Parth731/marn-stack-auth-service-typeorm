@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.event_name == 'pull_request'
     env:
-      DB_DATABASE_URL: ${{ secrets.TEST_DB_DATABASE_URL }}
+      DB_DATABASE_URL: 'postgresql://postgres.athuqkqugsimuolwjpaf:mj2p$iMNPe!nhWz@aws-0-ap-south-1.pooler.supabase.com:5432/postgres'
       DB_HOST: ${{ secrets.TEST_DB_HOST }}
       DB_PORT: ${{ secrets.TEST_DB_PORT }}
       DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
