@@ -8,7 +8,7 @@
     "test": "jest --no-cache --coverage --all --runInBand",
     "build": "tsc",
     "start": "tsc && ts-node dist/server.js",
-    "dev": "cross-env NODE_ENV=dev nodemon --legacy-watch src/server.ts",
+    "dev": "nodemon --legacy-watch src/server.ts",
     "typeorm": "npm run build && npx typeorm-ts-node-esm -d dist/database/data-source.js",
     "migration:show": "npm run typeorm migration:show",
     "migration:create": "typeorm-ts-node-commonjs migration:create",
