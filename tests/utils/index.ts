@@ -30,6 +30,7 @@ export const isJwt = (token: string | null): boolean => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createTenant = async (repository: Repository<Tenant>) => {
   const tenant = await repository.save({
     name: 'Test tenant',
